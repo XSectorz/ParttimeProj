@@ -132,8 +132,6 @@ const Sidebar = () => {
                                 </AnimateHeight>
                             </li>
                         </ul>
-                        
-                            
                     </PerfectScrollbar>
                 </div>
             </nav>

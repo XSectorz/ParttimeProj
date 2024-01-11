@@ -41,8 +41,23 @@ const BannerPreview = () => {
                     </button>
                 </div>
             </div>
-            <div className=''>
+            <div className='mb-4'>
                 <BannerCarouselObj/>
+            </div>
+            <div className='flex flex-col'>
+                <div className='flex justify-center items-center w-40 -translate-x-40 absolute bg-[#e8e8e8] text-[#666666]' style={{ zIndex: "10"}}>
+                    <div className='flex flex-col justify-center items-center my-1'>
+                        <div className='flex '>
+                            รายการหมวดหมู่สินค้า
+                        </div>
+                    </div>
+                </div>
+                <div className='flex text-black mx-7 text-lg'>
+                    หมวดหมู่
+                </div>
+                <div className='flex'>
+
+                </div>
             </div>
         </div>
     )

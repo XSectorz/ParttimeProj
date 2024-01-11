@@ -16,7 +16,7 @@ const BannerCarouselObj = () => {
     return (
         <div>
             <div className='flex w-full'>
-                <div className='flex justify-center items-center w-32 -translate-x-32 absolute bg-[#666666] text-white' style={{ zIndex: "10"}}>
+                <div className='flex justify-center items-center w-40 -translate-x-40 absolute bg-[#666666] text-white' style={{ zIndex: "10"}}>
                     <div className='flex flex-col justify-center items-center my-1'>
                         <div className='flex '>
                             แบนเนอร์
@@ -100,7 +100,7 @@ const BannerCarouselObj = () => {
                     </div>
                 </div>
             </div>
-            <div className='flex w-full h-full mt-6 text-white'>
+            <div className='flex h-full mt-6 text-white mx-7'>
                 <div className='flex h-full w-full rounded-md bg-[#363a44]'>
                     <div className='flex flex-row py-3 justify-between w-full'>
                         <div className='flex rounded-md bg-white w-7 h-7 ml-2' />
