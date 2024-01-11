@@ -91,10 +91,12 @@ const Sidebar = () => {
                         </button>
                     </div>
                     <PerfectScrollbar className="h-[calc(100vh-80px)] relative">
-                        <li className="menu nav-item">
+                        <ul className="relative font-semibold space-y-0.5 p-4 py-0">
+                            <li className="menu nav-item">
                                 <button type="button" className={`${currentMenu === 'banners' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('banners')}>
                                     <div className="flex items-center">
-                                        <IconMenuUsers className="group-hover:!text-primary shrink-0" />
+                                        <IconMenuNotes
+                                         className="group-hover:!text-primary shrink-0" />
                                         <span className="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">{t('Banner Management')}</span>
                                     </div>
 
@@ -128,7 +130,8 @@ const Sidebar = () => {
                                         </li>
                                     </ul>
                                 </AnimateHeight>
-                        </li>
+                            </li>
+                        </ul>
                         
                             
                     </PerfectScrollbar>
