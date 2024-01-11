@@ -41,7 +41,7 @@ const BannerPreview = () => {
                     </button>
                 </div>
             </div>
-            <div>
+            <div className=''>
                 <BannerCarouselObj/>
             </div>
         </div>

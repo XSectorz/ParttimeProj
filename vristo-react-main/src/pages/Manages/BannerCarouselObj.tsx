@@ -15,7 +15,17 @@ const BannerCarouselObj = () => {
 
     return (
         <div>
-<div className='flex w-full'>
+            <div className='flex w-full'>
+                <div className='flex justify-center items-center w-32 -translate-x-32 absolute bg-[#666666] text-white' style={{ zIndex: "10"}}>
+                    <div className='flex flex-col justify-center items-center my-1'>
+                        <div className='flex '>
+                            แบนเนอร์
+                        </div>
+                        <div className='flex '>
+                            Carousel
+                        </div>
+                    </div>
+                </div>
                 <Swiper
                                 modules={[Autoplay]}
                                 autoplay={{ delay: 2000 }}
