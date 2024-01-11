@@ -3,11 +3,17 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import { Navigation, Pagination, Autoplay } from 'swiper';
+import { Navigation, Pagination, Autoplay,Grid } from 'swiper';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { IRootState } from '../../store';
 import BannerCarouselObj from './BannerCarouselObj';
+
+import 'swiper/css';
+import 'swiper/css/grid';
+import 'swiper/css/pagination';
+
+import '../../assets/css/swiper-2-rows.css'
 
 const BannerPreview = () => {
 
@@ -55,8 +61,29 @@ const BannerPreview = () => {
                 <div className='flex text-black mx-7 text-lg'>
                     หมวดหมู่
                 </div>
-                <div className='flex'>
-
+                <div className='flex flex-row'>
+                <Swiper
+                        slidesPerView={3}
+                        grid={{
+                        rows: 2,
+                        }}
+                        spaceBetween={30}
+                        pagination={{
+                        clickable: true,
+                        }}
+                        modules={[Grid, Pagination]}
+                        className="mySwiper"
+                    >
+                        <SwiperSlide>Slide 1</SwiperSlide>
+                        <SwiperSlide>Slide 2</SwiperSlide>
+                        <SwiperSlide>Slide 3</SwiperSlide>
+                        <SwiperSlide>Slide 4</SwiperSlide>
+                        <SwiperSlide>Slide 5</SwiperSlide>
+                        <SwiperSlide>Slide 6</SwiperSlide>
+                        <SwiperSlide>Slide 7</SwiperSlide>
+                        <SwiperSlide>Slide 8</SwiperSlide>
+                        <SwiperSlide>Slide 9</SwiperSlide>
+                    </Swiper>
                 </div>
             </div>
         </div>
