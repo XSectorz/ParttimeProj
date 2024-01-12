@@ -5,6 +5,7 @@ import ImagePlaceholder from './ImagePlaceholder';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import React, { useState, useEffect  } from 'react';
 import Swal from 'sweetalert2';
+import { number } from 'yup';
 
 interface BannerPanelProps {
     currentMode: string;
@@ -16,14 +17,21 @@ interface InfoDataItem {
     title_th: string;
     title_eng: string;
     description: string;
-  }
+}
+
+interface ImageCarouselPlaceholder {
+    imgArray: number,
+    imgPlaceholders: number,
+    imgIndex: number
+}
+
   const BannerPanel: React.FC<BannerPanelProps> = ({ currentMode,setCurrentMode }) => {
     
     const [imagePlaceholders, setImagePlaceholders] = useState([1]);
     const [imageArray , setImageArray] = useState<string [] >([]);
     const [linkArray , setLinkArray] = useState<string [] >(['','','','']);
+    const [imageList,setImageList] = useState<ImageCarouselPlaceholder[] | null>(null);
     const [infoDescriptionData, setInfoDescriptionData] = useState<InfoDataItem | null>(null);
-
     const infoData = [
         {
             title_th: "แบนเนอร์",
@@ -37,6 +45,27 @@ interface InfoDataItem {
         },
     ]
 
+    const handleDelete = (indexToDelete: number) => {
+        const array = []
+
+        console.log(`imgArray legth: ${imageArray.length}`)
+        console.log(`indextoDelete: ${indexToDelete}`)
+        
+        indexToDelete = indexToDelete - 1;
+
+        for(let i = 0 ; i < imageArray.length ; i++) {
+            if(i < indexToDelete){
+                array.push(i)
+            } else if(i === indexToDelete) {
+                continue
+            } else {
+                array.push(i-1)
+            }
+        }
+        console.log(array)
+        setImagePlaceholders([...array])
+    }
+
     useEffect(() => {
         // ตรวจสอบเมื่อ currentMode เปลี่ยนแปลง
         if (currentMode === 'categories') {
@@ -45,6 +74,18 @@ interface InfoDataItem {
             setInfoDescriptionData(infoData[0]);
         }
       }, [currentMode]);
+    /*
+      useEffect(() => {
+        
+        const tempDataList = imagePlaceholders.map(index => ({
+            imgArray: imageArray,
+            imgPlaceholders: imagePlaceholders,
+            imgIndex: index - 1
+        }));
+        setImageList(tempDataList as ImageCarouselPlaceholder[])
+
+      }, [imagePlaceholders]);*/
+
 
     const addImagePlaceholder = () => {
         if (imagePlaceholders.length < 4) {
@@ -64,9 +105,29 @@ interface InfoDataItem {
         setCurrentMode(typeMode)
     }
 
-    const deleteImagePlaceholder = (index: Number) => {
-        const updatedPlaceholders = imagePlaceholders.filter(item => item !== index);
+    const deleteImagePlaceholder = (indexToDelete: number) => {
+        const updatedPlaceholders = imagePlaceholders.filter(item => item !== indexToDelete);
         setImagePlaceholders(updatedPlaceholders);
+       
+        console.log(`Delete Index: ${indexToDelete}`)
+/*
+        setImagePlaceholders(prevPlaceholders => {
+            return prevPlaceholders.map((items, index) => {
+                console.log(`My: ${index} currentIndex ${}`)
+                return index < indexToDelete ? index : index > indexToDelete ? index - 1 : index;
+            });
+        });*/
+
+        /*setImagePlaceholders(prevPlaceholders => {
+            
+            const updatedPlaceholders = prevPlaceholders.filter(item => item !== indexToDelete);
+            
+            const indexToUpdate = updatedPlaceholders.findIndex(item => item > indexToDelete);
+            console.log(indexToDelete)
+            console.log(indexToUpdate)
+
+            return updatedPlaceholders.map((_, index) => (index < indexToUpdate ? index : index + 1));
+        });*/
     };
 
     return (
@@ -113,18 +174,22 @@ interface InfoDataItem {
                         </div>
                     </div>
                     <div className='flex-col'>
-                        {imagePlaceholders.map(index => (
-                            <ImagePlaceholder
-                                key={index}
-                                index={index-1}
-                                imageArray={imageArray}
-                                imagePlaceholders={imagePlaceholders}
-                                setImageArray={setImageArray}
-                                linkArray={linkArray}
-                                setLinkArray={setLinkArray}
-                                onDelete={() => deleteImagePlaceholder(index)} // ส่งฟังก์ชัน deleteImagePlaceholder ไปยัง ImagePlaceholder
-                            />
-                        ))}
+                        {   
+                            imagePlaceholders.map(index => {
+                            return (
+                                <ImagePlaceholder
+                                    key={index}
+                                    currentIndex={index-1}
+                                    imageArray={imageArray}
+                                    imagePlaceholders={imagePlaceholders}
+                                    setImageArray={setImageArray}
+                                    linkArray={linkArray}
+                                    setLinkArray={setLinkArray}
+                                    onDelete={() => handleDelete(index)} 
+                                />
+                            );
+                            })
+                        }
                     </div>
                     <div className="flex justify-center items-center h-full">
                         <div className="flex flex-row border-dashed border-[3px] border-[#4361EE] p-4 w-full rounded-lg justify-center"
