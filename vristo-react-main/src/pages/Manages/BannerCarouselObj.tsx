@@ -9,13 +9,12 @@ import { IRootState } from '../../store';
 
 const BannerCarouselObj = () => {
 
-    const items = ['carousel1.jpeg', 'carousel2.jpeg', 'carousel3.jpeg'];
     const themeConfig = useSelector((state: IRootState) => state.themeConfig);
-    
+    const uploadedPhoto = useSelector((state: IRootState) => state.photo.uploadedPhoto);
     return (
         <div>
             <div className='flex w-full'>
-                <div className='flex justify-center items-center w-40 -translate-x-40 absolute bg-[#666666] text-white' style={{ zIndex: "10"}}>
+                <div className='flex justify-center items-center w-40 -translate-x-40 absolute bg-[#666666] text-white' style={{ zIndex: "10" }}>
                     <div className='flex flex-col justify-center items-center my-1'>
                         <div className='flex '>
                             แบนเนอร์
@@ -26,22 +25,28 @@ const BannerCarouselObj = () => {
                     </div>
                 </div>
                 <Swiper
-                                modules={[Autoplay]}
-                                autoplay={{ delay: 2000 }}
-                                className="swiper max-w-3xl mx-auto"
-                                id="slider2"
-                                dir={themeConfig.rtlClass}
-                                key={themeConfig.rtlClass === 'rtl' ? 'true' : 'false'}
-                            >
-                                <div className="swiper-wrapper">
-                                    {items.map((item, i) => {
-                                        return (
-                                            <SwiperSlide key={i}>
-                                                <img src={`/assets/images/${item}`} className="w-full max-h-80 object-cover" alt="itemImage" />
-                                            </SwiperSlide>
-                                        );
-                                    })}
-                                </div>
+                    modules={[Autoplay]}
+                    autoplay={{ delay: 2000 }}
+                    className="swiper max-w-3xl mx-auto"
+                    id="slider2"
+                    dir={themeConfig.rtlClass}
+                    key={themeConfig.rtlClass === 'rtl' ? 'true' : 'false'}
+                >
+                    <div className="swiper-wrapper">
+                        {uploadedPhoto
+                            ?.filter((photoUrl) => !!photoUrl) // Filter out falsy values
+                            .map((photoUrl, i) => (
+                                <SwiperSlide key={i}>
+                                    <img src={photoUrl} className="w-full max-h-80 object-cover" alt={`itemImage-${i}`} />
+                                </SwiperSlide>
+                            ))}
+                        {(!uploadedPhoto || uploadedPhoto.length === 0) && (
+                            // Display a default image when uploadedPhoto is null or empty
+                            <SwiperSlide>
+                                <img src="/assets/images/banner-not-found.png" className="w-full max-h-80 object-cover" alt="defaultImage" />
+                            </SwiperSlide>
+                        )}
+                    </div>
                 </Swiper>
             </div>
             <div className='flex h-full w-full'>
@@ -53,18 +58,18 @@ const BannerCarouselObj = () => {
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                                 </svg>
                             </div>
-                            <input className="block h-11 w-full p-2 ps-10 text-sm border rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 focus:outline-none" placeholder="     ค้นหาสินค้าและร้านค้า " 
-                                style={{ fontSize: '20px' }}/>
+                            <input className="block h-11 w-full p-2 ps-10 text-sm border rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 focus:outline-none" placeholder="     ค้นหาสินค้าและร้านค้า "
+                                style={{ fontSize: '20px' }} />
                         </div>
                     </div>
-                    <div className='flex flex-row relative justify-between bottom-11 translate-x-32'>
+                    <div className='flex flex-row relative justify-between bottom-11 pl-20'>
                         <div className='flex rounded-full h-[72px] w-[72px] bg bg-[#667085] absolute justify-center items-center'>
-                            <div className='flex rounded-lg bg-white h-8 w-8'/>
+                            <div className='flex rounded-lg bg-white h-8 w-8' />
                         </div>
                     </div>
-                    <div className='flex flex-row relative justify-between bottom-11 translate-x-56'>
-                    <div className='flex rounded-full h-[72px] w-[72px] bg bg-[#667085] absolute justify-center items-center'>
-                            <div className='flex rounded-lg bg-white h-8 w-8'/>
+                    <div className='flex flex-row relative justify-between bottom-11 pl-24'>
+                        <div className='flex rounded-full h-[72px] w-[72px] bg bg-[#667085] absolute justify-center items-center'>
+                            <div className='flex rounded-lg bg-white h-8 w-8' />
                         </div>
                     </div>
                 </div>

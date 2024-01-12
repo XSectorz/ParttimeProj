@@ -38,11 +38,11 @@ const SlideTypeContainer: React.FC<SlideTypeContainerProps> = ({ currentIndex, s
                         setCurrentIndex(swiper.activeIndex);
                     }}
                 >
-                    <SwiperSlide className='swiper-slide-show'><SlideTypeCard title="อาหารเสริม" /></SwiperSlide>
-                    <SwiperSlide className='swiper-slide-show'><SlideTypeCard title="อาหารเสริม" /></SwiperSlide>
-                    <SwiperSlide className='swiper-slide-show'><SlideTypeCard title="อาหารเสริม" /></SwiperSlide>
-                    <SwiperSlide className='swiper-slide-show'><SlideTypeCard title="อาหารเสริม" /></SwiperSlide>
-                    <SwiperSlide className='swiper-slide-show'><SlideTypeCard title="อาหารเสริม" /></SwiperSlide>
+                    <SwiperSlide className='swiper-slide-show'><SlideTypeCard title="อาหารเสริม1" /></SwiperSlide>
+                    <SwiperSlide className='swiper-slide-show'><SlideTypeCard title="อาหารเสริม2" /></SwiperSlide>
+                    <SwiperSlide className='swiper-slide-show'><SlideTypeCard title="อาหารเสริม3" /></SwiperSlide>
+                    <SwiperSlide className='swiper-slide-show'><SlideTypeCard title="อาหารเสริม4" /></SwiperSlide>
+                    <SwiperSlide className='swiper-slide-show'><SlideTypeCard title="อาหารเสริม5" /></SwiperSlide>
                     <SwiperSlide className='swiper-slide-show'><SlideTypeCard title="อาหารเสริม" /></SwiperSlide>
                     <SwiperSlide className='swiper-slide-show'><SlideTypeCard title="อาหารเสริม" /></SwiperSlide>
                     <SwiperSlide className='swiper-slide-show'><SlideTypeCard title="อาหารเสริม" /></SwiperSlide>

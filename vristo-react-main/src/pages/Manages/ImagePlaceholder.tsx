@@ -14,11 +14,12 @@ import { useDispatch } from 'react-redux';
 import { setUploadedPhoto } from './photoSlice';
 interface ImagePlaceholderProps {
     onDelete: () => void;
+    index: number;
     imageArray: string[]
     setImageArray: (mode: string[]) => void;
 }
 
-const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ onDelete, imageArray, setImageArray }) => {
+const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ index, onDelete, imageArray, setImageArray }) => {
     const [showDropdown, setShowDropdown] = useState(false);
     const [selectedImage, setSelectedImage] = useState<File | null>(null);
     const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -57,7 +58,8 @@ const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ onDelete, imageArra
             reader.onloadend = () => {
                 setSelectedImage(file);
                 setImagePreview(reader.result as string);
-                const newArray = [...imageArray, reader.result as string];
+                const newArray = [...imageArray];
+                newArray[index] = reader.result as string;
                 setImageArray(newArray);
                 console.log(newArray);
                 dispatch(setUploadedPhoto(newArray));

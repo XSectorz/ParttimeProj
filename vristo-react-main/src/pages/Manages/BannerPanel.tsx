@@ -114,6 +114,7 @@ interface InfoDataItem {
                         {imagePlaceholders.map(index => (
                             <ImagePlaceholder
                                 key={index}
+                                index={index-1}
                                 imageArray={imageArray}
                                 setImageArray={setImageArray}
                                 onDelete={() => deleteImagePlaceholder(index)} // ส่งฟังก์ชัน deleteImagePlaceholder ไปยัง ImagePlaceholder
