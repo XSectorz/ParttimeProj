@@ -175,8 +175,8 @@ interface ImageCarouselPlaceholder {
                     </div>
                     <div className='flex-col'>
                         {   
-                            imagePlaceholders.map(index => {
-                            return (
+                            imagePlaceholders.map(index => { 
+                            return ( 
                                 <ImagePlaceholder
                                     key={index}
                                     currentIndex={index-1}
