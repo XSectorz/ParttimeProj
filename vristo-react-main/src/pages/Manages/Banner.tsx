@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { setPageTitle } from '../../store/themeConfigSlice';
 import Publish from '../Components/Publish';
 import BannerPanel from './BannerPanel';
+import BannerPreview from './BannerPreview';
 
 const ManageBanner = () => {
 
@@ -17,6 +18,11 @@ const ManageBanner = () => {
                 <div className='flex flex-col w-3/5'>
                     <div className='flex font-nunito text-md'>
                         Banner / All Banner 
+                    </div>
+                    <div className='flex w-full mt-11 justify-center items-center'>
+                        <div className='flex w-3/5'>
+                            <BannerPreview/>
+                        </div>
                     </div>
                 </div>
                 <div className='flex w-2/5 flex-col'>
