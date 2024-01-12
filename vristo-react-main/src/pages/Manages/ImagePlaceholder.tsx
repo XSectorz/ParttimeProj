@@ -9,6 +9,7 @@ import IconVideo from '../../components/Icon/IconVideo';
 import IconX from '../../components/Icon/IconX';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import IconTrash from '../../components/Icon/IconTrash';
+import Swal from 'sweetalert2';
 
 interface ImagePlaceholderProps {
     onDelete: () => void;
@@ -20,6 +21,26 @@ const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ onDelete }) => {
     const onEdit = () => {
         setShowDropdown(!showDropdown);
     };
+
+    const onPencil = () => {
+        Swal.fire({
+            title: 'ยืนยันการลบ',
+            html: '<div class="text-center" style="padding: 0em;">คุณแน่ใจที่จะลบรูปนี้ออกใช่หรือไม่?</div>',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#00ab55',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'ยืนยัน',
+            cancelButtonText: 'ยกเลิก', 
+            customClass: {
+                title: 'text-center' 
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                onDelete();
+            }
+        });
+    }
 
     return (
         <>
@@ -43,7 +64,7 @@ const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ onDelete }) => {
                         <div className="w-full h-48 bg-[#FFFFFF] rounded-md relative" style={{ backgroundImage: "url('https://storage.googleapis.com/proudcity/mebanenc/uploads/2021/03/placeholder-image.png')", backgroundSize: "cover", backgroundPosition: "center" }}>
                             <div className="flex bg-[#808080] opacity-75 absolute bottom-0 left-0 right-0 justify-around px-2">
 
-                                <div className='flex justify-center w-1/4 py-2'>
+                                <div className='flex justify-center w-1/4 py-2' onClick={onPencil} style={{ cursor: 'pointer' }}>
                                     <button className="text-gray-600">
                                         <IconPencil className='text-white' />
                                     </button>

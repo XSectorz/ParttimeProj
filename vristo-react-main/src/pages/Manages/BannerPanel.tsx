@@ -16,7 +16,7 @@ const BannerPanel = () => {
             Swal.fire({
                 icon: 'warning',
                 title: 'Warning',
-                text: 'สามารถเพิ่มรูปภาพ/วิดีโอ ได้สูงสุด 4 รูปเท่านั้น',
+                html: '<div class="text-center" style="padding: 0em;">สามารถเพิ่มรูปภาพ/วิดีโอ ได้สูงสุด 4 รูปเท่านั้น</div>',
                 //textColor:'#ff5733',
                 confirmButtonColor: '#00ab55',
             });
