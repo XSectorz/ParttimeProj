@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import IconArrowBackward from '../../components/Icon/IconArrowBackward';
 import IconCaretDown from '../../components/Icon/IconCaretDown';
 import IconFolder from '../../components/Icon/IconFolder';
@@ -12,14 +12,16 @@ import IconTrash from '../../components/Icon/IconTrash';
 import Swal from 'sweetalert2';
 import { useDispatch } from 'react-redux';
 import { setUploadedPhoto } from './photoSlice';
+
 interface ImagePlaceholderProps {
     onDelete: () => void;
     index: number;
     imageArray: string[]
+    imagePlaceholders: number[];
     setImageArray: (mode: string[]) => void;
 }
 
-const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ index, onDelete, imageArray, setImageArray }) => {
+const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ index, onDelete, imageArray, setImageArray,imagePlaceholders }) => {
     const [showDropdown, setShowDropdown] = useState(false);
     const [selectedImage, setSelectedImage] = useState<File | null>(null);
     const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -49,6 +51,40 @@ const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ index, onDelete, im
         });
     }
 
+    useEffect(() => {
+        console.log("change");
+      }, [imageArray]);
+
+    const handleImageUp = () => {
+        if(index >= 1) {
+            console.log('up');
+            var tempImgArray = [...imageArray]
+            const tempImg = tempImgArray[index] 
+            tempImgArray[index] = tempImgArray[index-1]
+            tempImgArray[index-1] = tempImg
+            setImageArray(tempImgArray)
+        }
+    }
+
+    const handleImageDown = () => {
+        //console.log(imageArray.length)
+        //console.log(imageArray)
+        if(imagePlaceholders.length > 1) {
+            if(imagePlaceholders.length !== index+1) {
+                if(index < 3) {
+                    /*const tempImg = imageArray[index] 
+                    imageArray[index] = imageArray[index+1]
+                    imageArray[index+1] = tempImg*/
+                    var tempImgArray = [...imageArray]
+                    const tempImg = tempImgArray[index] 
+                    tempImgArray[index] = tempImgArray[index+1]
+                    tempImgArray[index+1] = tempImg
+                    setImageArray(tempImgArray)
+                }
+            }
+        }
+    }
+
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files && e.target.files[0];
 
@@ -61,7 +97,7 @@ const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ index, onDelete, im
                 const newArray = [...imageArray];
                 newArray[index] = reader.result as string;
                 setImageArray(newArray);
-                console.log(newArray);
+                //console.log(newArray);
                 dispatch(setUploadedPhoto(newArray));
             };
 
@@ -73,13 +109,14 @@ const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ index, onDelete, im
         <>
             <div className="bg-[#F6F6F6] border border-8d8d8f w-full p-4 shadow rounded-lg mb-4 flex">
                 <div className="flex flex-col justify-between mr-4">
-                    <button className="text-gray-600 hover:bg-gray-300 rounded-full p-2 mb-2">
+                    <button className="text-gray-600 hover:bg-gray-300 rounded-full p-2 mb-2"
+                    onClick={handleImageUp}>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 10.5 12 3m0 0 7.5 7.5M12 3v18" />
                         </svg>
 
                     </button>
-                    <button className="text-gray-600 hover:bg-gray-300 rounded-full p-2">
+                    <button className="text-gray-600 hover:bg-gray-300 rounded-full p-2" onClick={handleImageDown}>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3" />
                         </svg>
@@ -88,7 +125,7 @@ const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ index, onDelete, im
                 </div>
                 <div className="flex-grow">
                     <div className="flex rounded-lg items-center justify-between mb-3 border border-8d8d8f">
-                        <div className="w-full h-48 bg-[#FFFFFF] rounded-md relative" style={{ backgroundImage: `url('${imagePreview || 'https://storage.googleapis.com/proudcity/mebanenc/uploads/2021/03/placeholder-image.png'}')`, backgroundSize: "cover", backgroundPosition: "center" }}>
+                        <div className="w-full h-48 bg-[#FFFFFF] rounded-md relative" style={{ backgroundImage: `url('${imageArray[index] || 'https://storage.googleapis.com/proudcity/mebanenc/uploads/2021/03/placeholder-image.png'}')`, backgroundSize: "cover", backgroundPosition: "center" }}>
                             <div className="flex bg-[#808080] opacity-75 absolute bottom-0 left-0 right-0 justify-around px-2">
 
                                 <div className='flex justify-center w-1/4 py-2' onClick={onPencil} style={{ cursor: 'pointer' }}>

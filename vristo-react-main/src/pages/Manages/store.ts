@@ -1,4 +1,4 @@
-// In a file named store.ts
+
 import { configureStore } from '@reduxjs/toolkit';
 import photoReducer from './photoSlice';
 

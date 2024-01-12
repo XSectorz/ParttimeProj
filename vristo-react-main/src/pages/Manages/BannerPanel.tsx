@@ -11,6 +11,7 @@ interface BannerPanelProps {
     setCurrentMode: (mode: string) => void;
 }
 
+
 interface InfoDataItem {
     title_th: string;
     title_eng: string;
@@ -116,6 +117,7 @@ interface InfoDataItem {
                                 key={index}
                                 index={index-1}
                                 imageArray={imageArray}
+                                imagePlaceholders={imagePlaceholders}
                                 setImageArray={setImageArray}
                                 onDelete={() => deleteImagePlaceholder(index)} // ส่งฟังก์ชัน deleteImagePlaceholder ไปยัง ImagePlaceholder
                             />
