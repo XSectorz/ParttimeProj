@@ -111,12 +111,14 @@ const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ currentIndex, onDel
     }
 
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+
         const file = e.target.files && e.target.files[0];
 
         if (file) {
             const reader = new FileReader();
 
             reader.onloadend = () => {
+            
                 const newArray = [...imageArray];
                 newArray[currentIndex] = reader.result as string;
                 setImageArray(newArray);

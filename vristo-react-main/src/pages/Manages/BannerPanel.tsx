@@ -28,7 +28,7 @@ interface ImageCarouselPlaceholder {
   const BannerPanel: React.FC<BannerPanelProps> = ({ currentMode,setCurrentMode }) => {
     
     const [imagePlaceholders, setImagePlaceholders] = useState([1]);
-    const [imageArray , setImageArray] = useState<string [] >([]);
+    const [imageArray , setImageArray] = useState<string [] >(['test']);
     const [linkArray , setLinkArray] = useState<string [] >(['','','','']);
     const [imageList,setImageList] = useState<ImageCarouselPlaceholder[] | null>(null);
     const [infoDescriptionData, setInfoDescriptionData] = useState<InfoDataItem | null>(null);
@@ -46,24 +46,13 @@ interface ImageCarouselPlaceholder {
     ]
 
     const handleDelete = (indexToDelete: number) => {
-        const array = []
-
-        console.log(`imgArray legth: ${imageArray.length}`)
-        console.log(`indextoDelete: ${indexToDelete}`)
         
-        indexToDelete = indexToDelete - 1;
+        const array = imageArray.filter( (_,index) => index !== indexToDelete )
 
-        for(let i = 0 ; i < imageArray.length ; i++) {
-            if(i < indexToDelete){
-                array.push(i)
-            } else if(i === indexToDelete) {
-                continue
-            } else {
-                array.push(i-1)
-            }
-        }
         console.log(array)
-        setImagePlaceholders([...array])
+        setImageArray([...array])
+        
+        console.log(imageArray)
     }
 
     useEffect(() => {
@@ -88,8 +77,11 @@ interface ImageCarouselPlaceholder {
 
 
     const addImagePlaceholder = () => {
-        if (imagePlaceholders.length < 4) {
-            setImagePlaceholders(prevState => [...prevState, prevState.length + 1]);
+        if (imageArray.length < 4) {
+            const array = [...imageArray]
+            array.push('test')
+            setImageArray([...array]);
+
         } else {
             Swal.fire({
                 icon: 'warning',
@@ -175,11 +167,11 @@ interface ImageCarouselPlaceholder {
                     </div>
                     <div className='flex-col'>
                         {   
-                            imagePlaceholders.map(index => { 
+                            imageArray.map((items,index) => { 
                             return ( 
                                 <ImagePlaceholder
                                     key={index}
-                                    currentIndex={index-1}
+                                    currentIndex={index}
                                     imageArray={imageArray}
                                     imagePlaceholders={imagePlaceholders}
                                     setImageArray={setImageArray}

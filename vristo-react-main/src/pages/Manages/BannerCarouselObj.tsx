@@ -11,6 +11,7 @@ const BannerCarouselObj = () => {
 
     const themeConfig = useSelector((state: IRootState) => state.themeConfig);
     const uploadedPhoto = useSelector((state: IRootState) => state.photo.uploadedPhoto);
+
     return (
         <div>
             <div className='flex w-full'>
@@ -23,19 +24,19 @@ const BannerCarouselObj = () => {
                     key={themeConfig.rtlClass === 'rtl' ? 'true' : 'false'}
                 >
                     <div className="swiper-wrapper">
-                        {uploadedPhoto
-                            ?.filter((photoUrl) => !!photoUrl) // Filter out falsy values
-                            .map((photoUrl, i) => (
-                                <SwiperSlide key={i}>
-                                    <img src={photoUrl} className="w-full max-h-80 object-cover" alt={`itemImage-${i}`} />
+                        {
+                            (!uploadedPhoto || (uploadedPhoto.length === uploadedPhoto.filter(items => items === "test").length) || (uploadedPhoto.length === 1 && uploadedPhoto[0] === 'test')) ? (
+                                <SwiperSlide>
+                                    <img src="/assets/images/banner-not-found.png" className="w-full max-h-80 object-cover" alt="defaultImage" />
                                 </SwiperSlide>
-                            ))}
-                        {(!uploadedPhoto || uploadedPhoto.length === 0) && (
-                            // Display a default image when uploadedPhoto is null or empty
-                            <SwiperSlide>
-                                <img src="/assets/images/banner-not-found.png" className="w-full max-h-80 object-cover" alt="defaultImage" />
-                            </SwiperSlide>
-                        )}
+                            ) : (
+                                uploadedPhoto.filter(items => items !== "test").map((photoUrl, i) => (
+                                    <SwiperSlide key={i}>
+                                        <img src={photoUrl} className="w-full max-h-80 object-cover" alt={`itemImage-${i}`} />
+                                    </SwiperSlide>
+                                ))
+                            )
+                        }
                     </div>
                 </Swiper>
             </div>
