@@ -15,17 +15,7 @@ const BannerCarouselObj = () => {
 
     return (
         <div>
-            <div className='flex w-full'>
-                <div className='flex justify-center items-center w-40 -translate-x-40 absolute bg-[#666666] text-white' style={{ zIndex: "10"}}>
-                    <div className='flex flex-col justify-center items-center my-1'>
-                        <div className='flex '>
-                            แบนเนอร์
-                        </div>
-                        <div className='flex '>
-                            Carousel
-                        </div>
-                    </div>
-                </div>
+            <div className='flex'>
                 <div className='swiper max-w-3xl max-h-100 mx-auto'>
                     { items.length > 1 ? (
                         <Swiper
@@ -66,7 +56,7 @@ const BannerCarouselObj = () => {
                     </div>
                     <div className='flex flex-row relative justify-between bottom-11 translate-x-32'>
                         <div className='flex rounded-full h-[72px] w-[72px] bg bg-[#667085] absolute justify-center items-center'>
-                        <div className='flex rounded-lg bg-white h-8 w-8'/>
+                            <div className='flex rounded-lg bg-white h-8 w-8'/>
                         </div>
                     </div>
                     <div className='flex flex-row relative justify-between bottom-11 translate-x-56'>

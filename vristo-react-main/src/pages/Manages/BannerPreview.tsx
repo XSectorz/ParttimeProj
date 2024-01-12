@@ -19,9 +19,14 @@ import SlideTypeContainer from './SlideTypeContainer';
 const BannerPreview = () => {
 
     const [currentMenu, setCurrentMenu] = useState<String>('shops'); //shops , shopsItems, shopslist
+    const [currentMode, setCurrentMode] = useState<String>(''); //banners , categories
     const [currentIndex, setCurrentIndex] = useState<number>(0);
     const changeMenuBar = (typeMenuBar: String) => {
         setCurrentMenu(typeMenuBar)
+    }
+
+    const changeMode = (typeMode: String) => {
+        setCurrentMode(typeMode)
     }
 
     return (
@@ -45,11 +50,23 @@ const BannerPreview = () => {
                     </button>
                 </div>
             </div>
-            <div className='mb-4'>
-                <BannerCarouselObj />
+            <div>
+                <div className={`flex justify-center items-center w-40 -translate-x-40 absolute ${currentMode === "banners" ? 'bg-[#666666] text-white' : 'bg-[#e8e8e8] text-[#666666]'}`} style={{ zIndex: "10"}}>
+                    <div className='flex flex-col justify-center items-center my-1'>
+                        <div className='flex '>
+                            แบนเนอร์
+                        </div>
+                        <div className='flex '>
+                            Carousel
+                        </div>
+                    </div>
+                </div>
+                <div className={`${currentMode === "banners" ? 'border border-blue-800' : 'border-none'} cursor-pointer `} onClick={() => {changeMode("banners")}}>
+                    <BannerCarouselObj />
+                </div>
             </div>
-            <div className='flex flex-col'>
-                <div className='flex justify-center items-center w-40 -translate-x-40 absolute bg-[#e8e8e8] text-[#666666]' style={{ zIndex: "10" }}>
+            <div className={`flex mt-4 flex-col ${currentMode === "categories" ? 'border border-blue-800' : 'border-none'} cursor-pointer `} onClick={() => {changeMode("categories")}}>
+                <div className={`flex justify-center items-center w-40 -translate-x-40 absolute ${currentMode === "categories" ? 'bg-[#666666] text-white' : 'bg-[#e8e8e8] text-[#666666]'}`} style={{ zIndex: "10" }}>
                     <div className='flex flex-col justify-center items-center my-3'>
                         <div className='flex '>
                             รายการหมวดหมู่สินค้า
