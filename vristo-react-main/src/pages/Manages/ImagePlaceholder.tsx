@@ -18,13 +18,13 @@ interface ImagePlaceholderProps {
     index: number;
     imageArray: string[]
     imagePlaceholders: number[];
+    linkArray: string[]
     setImageArray: (mode: string[]) => void;
+    setLinkArray: (mode: string[]) => void;
 }
 
-const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ index, onDelete, imageArray, setImageArray,imagePlaceholders }) => {
+const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ index, onDelete, imageArray, setImageArray,imagePlaceholders,linkArray,setLinkArray }) => {
     const [showDropdown, setShowDropdown] = useState(false);
-    const [selectedImage, setSelectedImage] = useState<File | null>(null);
-    const [imagePreview, setImagePreview] = useState<string | null>(null);
     const fileInputRef = useRef<HTMLInputElement | null>(null);
     const dispatch = useDispatch();
     const onEdit = () => {
@@ -53,18 +53,30 @@ const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ index, onDelete, im
 
     useEffect(() => {
         console.log("change");
+        dispatch(setUploadedPhoto(imageArray));
       }, [imageArray]);
 
     const handleImageUp = () => {
         if(index >= 1) {
             console.log('up');
             var tempImgArray = [...imageArray]
+            var tempLinkArray = [...linkArray]
             const tempImg = tempImgArray[index] 
+            const tempLink = tempLinkArray[index]
             tempImgArray[index] = tempImgArray[index-1]
+            tempLinkArray[index] = tempLinkArray[index-1]
             tempImgArray[index-1] = tempImg
+            tempLinkArray[index-1] = tempLink
             setImageArray(tempImgArray)
+            setLinkArray(tempLinkArray)
         }
     }
+
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        var tempLinkArray = [...linkArray]
+        tempLinkArray[index] = event.target.value;
+        setLinkArray(tempLinkArray)
+      };
 
     const handleImageDown = () => {
         //console.log(imageArray.length)
@@ -72,14 +84,16 @@ const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ index, onDelete, im
         if(imagePlaceholders.length > 1) {
             if(imagePlaceholders.length !== index+1) {
                 if(index < 3) {
-                    /*const tempImg = imageArray[index] 
-                    imageArray[index] = imageArray[index+1]
-                    imageArray[index+1] = tempImg*/
                     var tempImgArray = [...imageArray]
+                    var tempLinkArray = [...linkArray]
                     const tempImg = tempImgArray[index] 
+                    const tempLink = tempLinkArray[index]
                     tempImgArray[index] = tempImgArray[index+1]
+                    tempLinkArray[index] = tempLinkArray[index+1]
+                    tempLinkArray[index+1] = tempLink
                     tempImgArray[index+1] = tempImg
                     setImageArray(tempImgArray)
+                    setLinkArray(tempLinkArray)
                 }
             }
         }
@@ -92,8 +106,6 @@ const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ index, onDelete, im
             const reader = new FileReader();
 
             reader.onloadend = () => {
-                setSelectedImage(file);
-                setImagePreview(reader.result as string);
                 const newArray = [...imageArray];
                 newArray[index] = reader.result as string;
                 setImageArray(newArray);
@@ -186,8 +198,9 @@ const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ index, onDelete, im
                                 type="text"
                                 placeholder="เพิ่มลิงค์ (ไม่จำเป็น)"
                                 className="w-full p-2 outline-none"
+                                value={linkArray[index]}
+                                onChange={handleChange}
                             />
-
                             <IconLink />
 
                         </div>

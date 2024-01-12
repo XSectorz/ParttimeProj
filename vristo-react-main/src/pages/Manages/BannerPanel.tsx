@@ -21,6 +21,7 @@ interface InfoDataItem {
     
     const [imagePlaceholders, setImagePlaceholders] = useState([1]);
     const [imageArray , setImageArray] = useState<string [] >([]);
+    const [linkArray , setLinkArray] = useState<string [] >(['','','','']);
     const [infoDescriptionData, setInfoDescriptionData] = useState<InfoDataItem | null>(null);
 
     const infoData = [
@@ -119,6 +120,8 @@ interface InfoDataItem {
                                 imageArray={imageArray}
                                 imagePlaceholders={imagePlaceholders}
                                 setImageArray={setImageArray}
+                                linkArray={linkArray}
+                                setLinkArray={setLinkArray}
                                 onDelete={() => deleteImagePlaceholder(index)} // ส่งฟังก์ชัน deleteImagePlaceholder ไปยัง ImagePlaceholder
                             />
                         ))}
