@@ -62,9 +62,7 @@ module.exports = {
                     dark: '#888ea8',
                 },
             },
-            fontFamily: {
-                nunito: ['Nunito', 'sans-serif'],
-            },
+            
             spacing: {
                 4.5: '18px',
             },
@@ -88,6 +86,10 @@ module.exports = {
                     },
                 },
             }),
+        },
+        fontFamily: {
+            nunito: ['Nunito', 'Noto Sans Thai'],
+            notosans: ['Noto Sans Thai','sans-serif']
         },
     },
     plugins: [
