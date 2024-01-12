@@ -92,8 +92,8 @@ const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ currentIndex, onDel
 
         //console.log(imagePlaceholders)
 
-        if(imagePlaceholders.length > 1) {
-            if(imagePlaceholders.length !== currentIndex+1) {
+        if(imageArray.length > 1) {
+            if(imageArray.length !== currentIndex+1) {
                 if(currentIndex < 3) {
                     var tempImgArray = [...imageArray]
                     var tempLinkArray = [...linkArray]
@@ -150,9 +150,8 @@ const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ currentIndex, onDel
                 </div>
                 <div className="flex-grow">
                     <div className="flex rounded-lg items-center justify-between mb-3 border border-8d8d8f">
-                        <div className="w-full h-48 bg-[#FFFFFF] rounded-md relative" style={{ backgroundImage: `url('${imageArray[currentIndex] || 'https://storage.googleapis.com/proudcity/mebanenc/uploads/2021/03/placeholder-image.png'}')`, backgroundSize: "cover", backgroundPosition: "center" }}>
+                    <div className="w-full h-48 bg-[#FFFFFF] rounded-md relative" style={{ backgroundImage: (imageArray[currentIndex] !== "test") ?  `url(${imageArray[currentIndex]})` : 'url(https://storage.googleapis.com/proudcity/mebanenc/uploads/2021/03/placeholder-image.png)', backgroundSize: "cover", backgroundPosition: "center" }}>
                             <div className="flex bg-[#808080] opacity-75 absolute bottom-0 left-0 right-0 justify-around px-2">
-
                                 <div className='flex justify-center w-1/4 py-2' onClick={onPencil} style={{ cursor: 'pointer' }}>
                                     <button className="text-gray-600">
                                         <IconPencil className='text-white' />

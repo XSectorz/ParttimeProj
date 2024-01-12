@@ -25,7 +25,7 @@ const BannerCarouselObj = () => {
                 >
                     <div className="swiper-wrapper">
                         {
-                            (!uploadedPhoto || (uploadedPhoto.length === uploadedPhoto.filter(items => items === "test").length) || (uploadedPhoto.length === 1 && uploadedPhoto[0] === 'test')) ? (
+                            (!uploadedPhoto|| (uploadedPhoto.length === uploadedPhoto.filter(items => items === "test").length) || (uploadedPhoto.length === 1 && uploadedPhoto[0] === 'test') || uploadedPhoto.length === 0) ? (
                                 <SwiperSlide>
                                     <img src="/assets/images/banner-not-found.png" className="w-full max-h-80 object-cover" alt="defaultImage" />
                                 </SwiperSlide>
