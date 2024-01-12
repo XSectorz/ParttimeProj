@@ -16,7 +16,7 @@ const BannerPanel = () => {
             Swal.fire({
                 icon: 'warning',
                 title: 'Warning',
-                text: 'สามารเพิ่มรูปภาพ/วิดีโอ ได้สูงสุด 4 รูปเท่านั้น',
+                text: 'สามารถเพิ่มรูปภาพ/วิดีโอ ได้สูงสุด 4 รูปเท่านั้น',
                 //textColor:'#ff5733',
                 confirmButtonColor: '#00ab55',
             });
@@ -70,25 +70,26 @@ const BannerPanel = () => {
                             • นามสกุลไฟล์: MP4
                         </div>
                     </div>
-                </div>
-
-
-                <div className='flex-col'>
-                    {imagePlaceholders.map(index => (
-                        <ImagePlaceholder
-                            key={index}
-                            onDelete={() => deleteImagePlaceholder(index)} // ส่งฟังก์ชัน deleteImagePlaceholder ไปยัง ImagePlaceholder
-                        />
-                    ))}
-                </div>
-                <div className="flex justify-center items-center h-full">
-                    <div className="flex flex-row border-dashed border-[3px] border-[#4361EE] p-4 w-full rounded-lg justify-center"
-                        onClick={addImagePlaceholder}
-                        role="button">
-                        <IconPlus className='mt-[3px] text-[#4361EE]' />
-                        <span className="font-notosans text-lg text-[#4361EE] ml-2">เพิ่มรูปภาพ/วิดีโอ ({imagePlaceholders.length}/4)</span>
+                    <div className='flex-col'>
+                        {imagePlaceholders.map(index => (
+                            <ImagePlaceholder
+                                key={index}
+                                onDelete={() => deleteImagePlaceholder(index)} // ส่งฟังก์ชัน deleteImagePlaceholder ไปยัง ImagePlaceholder
+                            />
+                        ))}
+                    </div>
+                    <div className="flex justify-center items-center h-full">
+                        <div className="flex flex-row border-dashed border-[3px] border-[#4361EE] p-4 w-full rounded-lg justify-center"
+                            onClick={addImagePlaceholder}
+                            role="button">
+                            <IconPlus className='mt-[3px] text-[#4361EE]' />
+                            <span className="font-notosans text-lg text-[#4361EE] ml-2">เพิ่มรูปภาพ/วิดีโอ ({imagePlaceholders.length}/4)</span>
+                        </div>
                     </div>
                 </div>
+
+
+
 
             </PerfectScrollbar>
         </>
