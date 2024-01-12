@@ -8,6 +8,7 @@ import BannerPreview from './BannerPreview';
 const ManageBanner = () => {
 
     const dispatch = useDispatch();
+    
     useEffect(() => {
         dispatch(setPageTitle('Banner Manage'));
     });
@@ -30,7 +31,7 @@ const ManageBanner = () => {
                         <Publish />
                     </div>
                     <div className='flex w-full mt-2'>
-                        <BannerPanel/>
+                        <BannerPanel />
                     </div>
                 </div>
             </div>

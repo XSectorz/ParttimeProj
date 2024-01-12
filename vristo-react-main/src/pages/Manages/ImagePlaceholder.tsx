@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import IconArrowBackward from '../../components/Icon/IconArrowBackward';
 import IconCaretDown from '../../components/Icon/IconCaretDown';
 import IconFolder from '../../components/Icon/IconFolder';
@@ -10,14 +10,20 @@ import IconX from '../../components/Icon/IconX';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import IconTrash from '../../components/Icon/IconTrash';
 import Swal from 'sweetalert2';
-
+import { useDispatch } from 'react-redux';
+import { setUploadedPhoto } from './photoSlice';
 interface ImagePlaceholderProps {
     onDelete: () => void;
+    imageArray: string[]
+    setImageArray: (mode: string[]) => void;
 }
 
-const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ onDelete }) => {
+const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ onDelete, imageArray, setImageArray }) => {
     const [showDropdown, setShowDropdown] = useState(false);
-
+    const [selectedImage, setSelectedImage] = useState<File | null>(null);
+    const [imagePreview, setImagePreview] = useState<string | null>(null);
+    const fileInputRef = useRef<HTMLInputElement | null>(null);
+    const dispatch = useDispatch();
     const onEdit = () => {
         setShowDropdown(!showDropdown);
     };
@@ -31,9 +37,9 @@ const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ onDelete }) => {
             confirmButtonColor: '#00ab55',
             cancelButtonColor: '#d33',
             confirmButtonText: 'ยืนยัน',
-            cancelButtonText: 'ยกเลิก', 
+            cancelButtonText: 'ยกเลิก',
             customClass: {
-                title: 'text-center' 
+                title: 'text-center'
             }
         }).then((result) => {
             if (result.isConfirmed) {
@@ -41,6 +47,25 @@ const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ onDelete }) => {
             }
         });
     }
+
+    const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files && e.target.files[0];
+
+        if (file) {
+            const reader = new FileReader();
+
+            reader.onloadend = () => {
+                setSelectedImage(file);
+                setImagePreview(reader.result as string);
+                const newArray = [...imageArray, reader.result as string];
+                setImageArray(newArray);
+                console.log(newArray);
+                dispatch(setUploadedPhoto(newArray));
+            };
+
+            reader.readAsDataURL(file);
+        }
+    };
 
     return (
         <>
@@ -61,7 +86,7 @@ const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ onDelete }) => {
                 </div>
                 <div className="flex-grow">
                     <div className="flex rounded-lg items-center justify-between mb-3 border border-8d8d8f">
-                        <div className="w-full h-48 bg-[#FFFFFF] rounded-md relative" style={{ backgroundImage: "url('https://storage.googleapis.com/proudcity/mebanenc/uploads/2021/03/placeholder-image.png')", backgroundSize: "cover", backgroundPosition: "center" }}>
+                        <div className="w-full h-48 bg-[#FFFFFF] rounded-md relative" style={{ backgroundImage: `url('${imagePreview || 'https://storage.googleapis.com/proudcity/mebanenc/uploads/2021/03/placeholder-image.png'}')`, backgroundSize: "cover", backgroundPosition: "center" }}>
                             <div className="flex bg-[#808080] opacity-75 absolute bottom-0 left-0 right-0 justify-around px-2">
 
                                 <div className='flex justify-center w-1/4 py-2' onClick={onPencil} style={{ cursor: 'pointer' }}>
@@ -69,10 +94,17 @@ const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ onDelete }) => {
                                         <IconPencil className='text-white' />
                                     </button>
                                 </div>
-                                <div className='flex border-l-2 justify-center w-1/4'>
-                                    <button className="text-gray-600 ">
-                                        <IconLaptop className='text-white' />
-                                    </button>
+                                <div className='flex border-l-2 justify-center w-1/4 cursor-pointer' onClick={() => fileInputRef.current?.click()}>
+                                    <input
+                                        type="file"
+                                        accept="image/jpeg, image/png, image/gif"
+                                        onChange={handleImageUpload}
+                                        style={{ display: 'none' }}
+                                        ref={fileInputRef}
+                                    />
+                                    <div className="text-gray-600">
+                                        <IconLaptop className='mt-[6.8px] text-white' />
+                                    </div>
                                 </div>
                                 <div className='flex border-l-2 justify-center w-1/4'>
                                     <button className="text-gray-600">
@@ -116,9 +148,9 @@ const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ onDelete }) => {
                                 placeholder="เพิ่มลิงค์ (ไม่จำเป็น)"
                                 className="w-full p-2 outline-none"
                             />
-                            <button className="text-gray-600 hover:bg-gray-300 rounded-full p-2">
-                                <IconLink />
-                            </button>
+
+                            <IconLink />
+
                         </div>
                     </div>
                 </div>

@@ -8,6 +8,7 @@ import Swal from 'sweetalert2';
 
 const BannerPanel = () => {
     const [imagePlaceholders, setImagePlaceholders] = useState([1]);
+    const [imageArray , setImageArray] = useState<string [] >([]);
 
     const addImagePlaceholder = () => {
         if (imagePlaceholders.length < 4) {
@@ -74,6 +75,8 @@ const BannerPanel = () => {
                         {imagePlaceholders.map(index => (
                             <ImagePlaceholder
                                 key={index}
+                                imageArray={imageArray}
+                                setImageArray={setImageArray}
                                 onDelete={() => deleteImagePlaceholder(index)} // ส่งฟังก์ชัน deleteImagePlaceholder ไปยัง ImagePlaceholder
                             />
                         ))}
