@@ -3,10 +3,8 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import { Navigation, Pagination, Autoplay,Grid } from 'swiper';
-import { useEffect, useState,useRef  } from 'react';
-import { useSelector } from 'react-redux';
-import { IRootState } from '../../store';
+import { Grid } from 'swiper';
+import { useState  } from 'react';
 import BannerCarouselObj from './BannerCarouselObj';
 import SlideTypeCard from './SlideTypeCard';
 

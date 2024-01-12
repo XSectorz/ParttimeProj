@@ -12,7 +12,6 @@ const BannerCarouselObj = () => {
     const items = ['carousel1.jpeg', 'carousel2.jpeg', 'carousel3.jpeg'];
     const themeConfig = useSelector((state: IRootState) => state.themeConfig);
     
-
     return (
         <div>
             <div className='flex w-full'>
@@ -103,13 +102,13 @@ const BannerCarouselObj = () => {
             <div className='flex h-full mt-6 text-white mx-7'>
                 <div className='flex h-full w-full rounded-md bg-[#363a44]'>
                     <div className='flex flex-row py-3 justify-between w-full'>
-                        <div className='flex rounded-md bg-white w-7 h-7 ml-2' />
+                        <div className='flex rounded-md bg-white w-9 h-7 ml-2' />
                         <div className='flex truncate ... text-lg mx-2'>
                             <p className="truncate ...">
                                 สถานที่จัดส่ง: 12/37 หมู่6 เฟส1 ซอยบางพุทรา อ.เมือง จ.สิงห์บุรี 16000
                             </p>
                         </div>
-                        <div className='flex rounded-md bg-white w-7 h-7 mr-2' />
+                        <div className='flex rounded-md bg-white w-9 h-7 mr-2' />
                     </div>
                 </div>
             </div>
