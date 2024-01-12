@@ -5,7 +5,8 @@ import ImagePlaceholder from './ImagePlaceholder';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import React, { useState, useEffect  } from 'react';
 import Swal from 'sweetalert2';
-import { number } from 'yup';
+import { useDispatch } from 'react-redux';
+import { setUploadedPhoto } from './photoSlice';
 
 interface BannerPanelProps {
     currentMode: string;
@@ -27,6 +28,8 @@ interface ImageCarouselPlaceholder {
 
   const BannerPanel: React.FC<BannerPanelProps> = ({ currentMode,setCurrentMode }) => {
     
+    const dispatch = useDispatch();
+
     const [imagePlaceholders, setImagePlaceholders] = useState([1]);
     const [imageArray , setImageArray] = useState<string [] >(['test']);
     const [linkArray , setLinkArray] = useState<string [] >(['','','','']);
@@ -48,11 +51,10 @@ interface ImageCarouselPlaceholder {
     const handleDelete = (indexToDelete: number) => {
         
         const array = imageArray.filter( (_,index) => index !== indexToDelete )
-
-        console.log(array)
         setImageArray([...array])
-        
-        console.log(imageArray)
+        if(array.length === 0) {
+            dispatch(setUploadedPhoto([]));
+        }
     }
 
     useEffect(() => {
@@ -93,34 +95,6 @@ interface ImageCarouselPlaceholder {
         }
     };
 
-    const changeMode = (typeMode: string) => {
-        setCurrentMode(typeMode)
-    }
-
-    const deleteImagePlaceholder = (indexToDelete: number) => {
-        const updatedPlaceholders = imagePlaceholders.filter(item => item !== indexToDelete);
-        setImagePlaceholders(updatedPlaceholders);
-       
-        console.log(`Delete Index: ${indexToDelete}`)
-/*
-        setImagePlaceholders(prevPlaceholders => {
-            return prevPlaceholders.map((items, index) => {
-                console.log(`My: ${index} currentIndex ${}`)
-                return index < indexToDelete ? index : index > indexToDelete ? index - 1 : index;
-            });
-        });*/
-
-        /*setImagePlaceholders(prevPlaceholders => {
-            
-            const updatedPlaceholders = prevPlaceholders.filter(item => item !== indexToDelete);
-            
-            const indexToUpdate = updatedPlaceholders.findIndex(item => item > indexToDelete);
-            console.log(indexToDelete)
-            console.log(indexToUpdate)
-
-            return updatedPlaceholders.map((_, index) => (index < indexToUpdate ? index : index + 1));
-        });*/
-    };
 
     return (
         <>

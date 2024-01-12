@@ -61,8 +61,8 @@ const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ currentIndex, onDel
     }
 
     useEffect(() => {
-        dispatch(setUploadedPhoto(imageArray.filter((img) => img !== '')));
-      }, [imageArray]);
+        dispatch(setUploadedPhoto(imageArray.filter((img) => (img !== '' && img !== 'test'))));
+    }, [imageArray]);
 
 
     const handleImageUp = () => {
