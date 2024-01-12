@@ -16,16 +16,20 @@ import '../../assets/css/swiper-2-rows.css'
 import SlideTypeContainer from './SlideTypeContainer';
 
 
-const BannerPreview = () => {
+interface BannerPreviewProps { //banners , categories
+    currentMode: string;
+    setCurrentMode: (mode: string) => void;
+}
+
+const BannerPreview: React.FC<BannerPreviewProps> = ({ currentMode, setCurrentMode }) => {
 
     const [currentMenu, setCurrentMenu] = useState<String>('shops'); //shops , shopsItems, shopslist
-    const [currentMode, setCurrentMode] = useState<String>(''); //banners , categories
     const [currentIndex, setCurrentIndex] = useState<number>(0);
     const changeMenuBar = (typeMenuBar: String) => {
         setCurrentMenu(typeMenuBar)
     }
 
-    const changeMode = (typeMode: String) => {
+    const changeMode = (typeMode: string) => {
         setCurrentMode(typeMode)
     }
 

@@ -6,7 +6,12 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 import React, { useState } from 'react';
 import Swal from 'sweetalert2';
 
-const BannerPanel = () => {
+interface BannerPanelProps {
+    currentMode: string;
+    setCurrentMode: (mode: string) => void;
+}
+
+  const BannerPanel: React.FC<BannerPanelProps> = ({ currentMode,setCurrentMode }) => {
     const [imagePlaceholders, setImagePlaceholders] = useState([1]);
 
     const addImagePlaceholder = () => {
@@ -22,6 +27,11 @@ const BannerPanel = () => {
             });
         }
     };
+
+    const changeMode = (typeMode: string) => {
+        setCurrentMode(typeMode)
+    }
+
     const deleteImagePlaceholder = (index: Number) => {
         const updatedPlaceholders = imagePlaceholders.filter(item => item !== index);
         setImagePlaceholders(updatedPlaceholders);
@@ -36,12 +46,12 @@ const BannerPanel = () => {
                             <p className='text-lg font-nunito font-extrabold'>แบนเนอร์&nbsp;</p>
                             <p className='text-lg font-nunito font-bold'>Carousel</p>
                         </div>
-                        <button className="flex">
+                        <button className="flex" onClick={() => setCurrentMode("")}>
                             <IconX className="w-5 h-5" />
                         </button>
                     </div>
                     <div className='flex font-nunito text-sm text-[#8d8d8f] break-words mt-4 mb-2'>
-                        แนะนำโปรโมชั่นที่ดีที่สุดหรือแสดงสินค้าและหมวดหมู่สินค้ายอดนิยมในร้านคุณด้วยแบนเนอร์ที่ลูกค้าสามารถเลื่อนดูได้
+                        แนะนำโปรโมชั่นที่ดีที่สุดหรือแสดงสินค้าและหมวดหมู่สินค้ายอดนิยมในร้านคุณด้วยแบนเนอร์ที่ลูกค้าสามารถเลื่อนดูได้ ${currentMode}
                     </div>
                     <div className='flex w-full h-[3px] bg-[#8d8d8f] mt-2' />
                     <div className='flex flex-col w-full px-4 mt-4'>
