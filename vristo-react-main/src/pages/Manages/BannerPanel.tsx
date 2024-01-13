@@ -19,30 +19,34 @@ interface InfoDataItem {
     title_eng: string
     description: string
     datalength: number
+    index: number
 }
 
 
   const BannerPanel: React.FC<BannerPanelProps> = ({ currentMode,setCurrentMode }) => {
-    
-    const dispatch = useDispatch();
 
-    const [imageArray , setImageArray] = useState<string [] >(['test']);
-    const [linkArray , setLinkArray] = useState<string [] >(['','','','']);
-    const [infoDescriptionData, setInfoDescriptionData] = useState<InfoDataItem | null>(null);
     const infoData = [
         {
             title_th: "แบนเนอร์",
             title_eng: "Carousel",
             description: "แนะนำโปรโมชั่นที่ดีที่สุดหรือแสดงสินค้าและหมวดหมู่สินค้ายอดนิยมในร้านคุณด้วยแบนเนอร์ที่ลูกค้าสามารถเลื่อนดูได้",
-            datalength: 4
+            datalength: 4,
+            index: 0
         },
         {
             title_th: "หมวดหมู่",
             title_eng: "Categories",
             description: "จัดเรียงหมวดหมู่รายการสินค้าเพื่อแนะนำสินค้าให้กับลูกค้าสามารถเลื่อนดูได้",
-            datalength: 14
+            datalength: 14,
+            index: 1
         },
     ]
+
+    const dispatch = useDispatch();
+
+    const [imageArray , setImageArray] = useState<string [][] >([['test'],['test']]);
+    const [linkArray , setLinkArray] = useState<string [][] >([[''],['']]);
+    const [infoDescriptionData, setInfoDescriptionData] = useState<InfoDataItem>(infoData[0]);
 
     const handleDelete = (indexToDelete: number) => {
         
@@ -64,16 +68,22 @@ interface InfoDataItem {
 
 
     const addImagePlaceholder = () => {
-        if (!infoDescriptionData || (imageArray.length < infoDescriptionData?.datalength) ) {
-            const array = [...imageArray]
-            array.push('test')
+        if (!infoDescriptionData || (imageArray[infoDescriptionData.index].length < infoDescriptionData.datalength) ) {
+            const array = imageArray.map(innerArray => [...innerArray]);
+            const linkArrayTemp = linkArray.map(innerArray => [...innerArray]);
+            //
+            //console.log("Add Img placeholder")
+            array[infoDescriptionData.index].push('test')
+            linkArrayTemp[infoDescriptionData.index].push('')
+            //console.log(array)
             setImageArray([...array]);
+            setLinkArray([...linkArrayTemp])
 
         } else {
             Swal.fire({
                 icon: 'warning',
                 title: 'Warning',
-                html: '<div class="text-center" style="padding: 0em;">สามารถเพิ่มรูปภาพ/วิดีโอ ได้สูงสุด 4 รูปเท่านั้น</div>',
+                html: `<div class="text-center" style="padding: 0em;">สามารถเพิ่มรูปภาพ/วิดีโอ ได้สูงสุด ${infoDescriptionData.datalength} รูปเท่านั้น</div>`,
                 //textColor:'#ff5733',
                 confirmButtonColor: '#00ab55',
             });
@@ -126,7 +136,7 @@ interface InfoDataItem {
                     </div>
                     <div className='flex-col'>
                         {   
-                            imageArray.map((items,index) => { 
+                            imageArray[infoDescriptionData.index].map((items,index) => { 
                             return ( 
                                 <ImagePlaceholder
                                     key={index}
@@ -147,7 +157,7 @@ interface InfoDataItem {
                             onClick={addImagePlaceholder}
                             role="button">
                             <IconPlus className='mt-[3px] text-[#4361EE]' />
-                            <span className="font-notosans text-lg text-[#4361EE] ml-2">เพิ่มรูปภาพ/วิดีโอ ({imageArray.length}/{infoDescriptionData?.datalength})</span>
+                            <span className="font-notosans text-lg text-[#4361EE] ml-2">เพิ่มรูปภาพ/วิดีโอ ({imageArray[infoDescriptionData.index].length}/{infoDescriptionData?.datalength})</span>
                         </div>
                     </div>
                 </div>
