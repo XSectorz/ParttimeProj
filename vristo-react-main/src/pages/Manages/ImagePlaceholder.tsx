@@ -19,20 +19,43 @@ interface ImagePlaceholderProps {
     onDelete: () => void;
     currentIndex: number;
     imageArray: string[]
-    imagePlaceholders: number[];
     linkArray: string[]
     setImageArray: (mode: string[]) => void;
     setLinkArray: (mode: string[]) => void;
+    currentModeType: string
 }
 
-const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ currentIndex, onDelete, imageArray, setImageArray,imagePlaceholders,linkArray,setLinkArray }) => {
+interface InfoDataItem {
+    description: string;
+}
+
+const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ currentIndex, onDelete, imageArray, setImageArray,linkArray,setLinkArray,currentModeType }) => {
     const [showDropdown, setShowDropdown] = useState(false);
     const fileInputRef = useRef<HTMLInputElement | null>(null);
+    const [descriptionData,setDescriptionData] = useState<InfoDataItem>();
 
     const dispatch = useDispatch();
     const onEdit = () => {
         setShowDropdown(!showDropdown);
     };
+
+    const infoData = [
+        {
+            description: "เพิ่มลิงค์ (ไม่จำเป็น)"
+        },
+        {
+            description: "ตั้งชื่อหมวดหมู่"
+        },
+    ]
+
+    useEffect(() => {
+        // ตรวจสอบเมื่อ currentMode เปลี่ยนแปลง
+        if (currentModeType === 'categories') {
+            setDescriptionData(infoData[1]);
+        } else {
+            setDescriptionData(infoData[0]);
+        }
+      }, [currentModeType]);
 
     const onPencil = () => {
         Swal.fire({
@@ -208,7 +231,7 @@ const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ currentIndex, onDel
                         <div className="bg-white rounded-lg p-2 w-full flex justify-between items-center border border-8d8d8f">
                             <input
                                 type="text"
-                                placeholder="เพิ่มลิงค์ (ไม่จำเป็น)"
+                                placeholder={descriptionData?.description}
                                 className="w-full p-2 outline-none"
                                 value={linkArray[currentIndex]}
                                 onChange={handleChange}

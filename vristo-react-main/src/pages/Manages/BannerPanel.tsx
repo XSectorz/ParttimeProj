@@ -15,36 +15,32 @@ interface BannerPanelProps {
 
 
 interface InfoDataItem {
-    title_th: string;
-    title_eng: string;
-    description: string;
+    title_th: string
+    title_eng: string
+    description: string
+    datalength: number
 }
 
-interface ImageCarouselPlaceholder {
-    imgArray: number,
-    imgPlaceholders: number,
-    imgIndex: number
-}
 
   const BannerPanel: React.FC<BannerPanelProps> = ({ currentMode,setCurrentMode }) => {
     
     const dispatch = useDispatch();
 
-    const [imagePlaceholders, setImagePlaceholders] = useState([1]);
     const [imageArray , setImageArray] = useState<string [] >(['test']);
     const [linkArray , setLinkArray] = useState<string [] >(['','','','']);
-    const [imageList,setImageList] = useState<ImageCarouselPlaceholder[] | null>(null);
     const [infoDescriptionData, setInfoDescriptionData] = useState<InfoDataItem | null>(null);
     const infoData = [
         {
             title_th: "แบนเนอร์",
             title_eng: "Carousel",
-            description: "แนะนำโปรโมชั่นที่ดีที่สุดหรือแสดงสินค้าและหมวดหมู่สินค้ายอดนิยมในร้านคุณด้วยแบนเนอร์ที่ลูกค้าสามารถเลื่อนดูได้"
+            description: "แนะนำโปรโมชั่นที่ดีที่สุดหรือแสดงสินค้าและหมวดหมู่สินค้ายอดนิยมในร้านคุณด้วยแบนเนอร์ที่ลูกค้าสามารถเลื่อนดูได้",
+            datalength: 4
         },
         {
             title_th: "หมวดหมู่",
             title_eng: "Categories",
-            description: "จัดเรียงหมวดหมู่รายการสินค้าเพื่อแนะนำสินค้าให้กับลูกค้าสามารถเลื่อนดูได้"
+            description: "จัดเรียงหมวดหมู่รายการสินค้าเพื่อแนะนำสินค้าให้กับลูกค้าสามารถเลื่อนดูได้",
+            datalength: 14
         },
     ]
 
@@ -65,21 +61,10 @@ interface ImageCarouselPlaceholder {
             setInfoDescriptionData(infoData[0]);
         }
       }, [currentMode]);
-    /*
-      useEffect(() => {
-        
-        const tempDataList = imagePlaceholders.map(index => ({
-            imgArray: imageArray,
-            imgPlaceholders: imagePlaceholders,
-            imgIndex: index - 1
-        }));
-        setImageList(tempDataList as ImageCarouselPlaceholder[])
-
-      }, [imagePlaceholders]);*/
 
 
     const addImagePlaceholder = () => {
-        if (imageArray.length < 4) {
+        if (!infoDescriptionData || (imageArray.length < infoDescriptionData?.datalength) ) {
             const array = [...imageArray]
             array.push('test')
             setImageArray([...array]);
@@ -147,11 +132,11 @@ interface ImageCarouselPlaceholder {
                                     key={index}
                                     currentIndex={index}
                                     imageArray={imageArray}
-                                    imagePlaceholders={imagePlaceholders}
                                     setImageArray={setImageArray}
                                     linkArray={linkArray}
                                     setLinkArray={setLinkArray}
                                     onDelete={() => handleDelete(index)} 
+                                    currentModeType={currentMode}
                                 />
                             );
                             })
@@ -162,7 +147,7 @@ interface ImageCarouselPlaceholder {
                             onClick={addImagePlaceholder}
                             role="button">
                             <IconPlus className='mt-[3px] text-[#4361EE]' />
-                            <span className="font-notosans text-lg text-[#4361EE] ml-2">เพิ่มรูปภาพ/วิดีโอ ({imagePlaceholders.length}/4)</span>
+                            <span className="font-notosans text-lg text-[#4361EE] ml-2">เพิ่มรูปภาพ/วิดีโอ ({imageArray.length}/{infoDescriptionData?.datalength})</span>
                         </div>
                     </div>
                 </div>
