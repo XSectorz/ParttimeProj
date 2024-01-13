@@ -14,6 +14,7 @@ import { useDispatch } from 'react-redux';
 import { setCategoriesPhoto, setCategoriesTitle, setUploadedPhoto } from './photoSlice';
 import Index from '../Index';
 import { number } from 'yup';
+import IconEdit from '../../components/Icon/IconEdit';
 
 interface ImagePlaceholderProps {
     onDelete: () => void;
@@ -208,7 +209,12 @@ const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ currentIndex, onDel
                 </div>
                 <div className="flex-grow">
                     <div className="flex rounded-lg items-center justify-between mb-3 border border-8d8d8f">
-                    <div className="w-full h-48 bg-[#FFFFFF] rounded-md relative" style={{ backgroundImage: ( descriptionData && imageArray[descriptionData.index][currentIndex] !== "test") ?  `url(${imageArray[descriptionData.index][currentIndex]})` : 'url(https://storage.googleapis.com/proudcity/mebanenc/uploads/2021/03/placeholder-image.png)', backgroundSize: "cover", backgroundPosition: "center" }}>
+                    <div className="w-full h-48 bg-[#FFFFFF] rounded-md relative" style={{ backgroundImage: 
+                        ( descriptionData && imageArray[descriptionData.index][currentIndex] !== "test") ?  
+                        `url(${imageArray[descriptionData.index][currentIndex]})` : 
+                        'url(https://storage.googleapis.com/proudcity/mebanenc/uploads/2021/03/placeholder-image.png)',
+                        
+                        backgroundSize: "cover", backgroundPosition: "center" }}>
                             <div className="flex bg-[#808080] opacity-75 absolute bottom-0 left-0 right-0 justify-around px-2">
                                 <div className='flex justify-center w-1/4 py-2' onClick={onPencil} style={{ cursor: 'pointer' }}>
                                     <button className="text-gray-600">
@@ -227,7 +233,14 @@ const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ currentIndex, onDel
                                         <IconLaptop className='mt-[6.8px] text-white' />
                                     </div>
                                 </div>
-                                <div className='flex border-l-2 justify-center w-1/4'>
+                                <div className='flex border-l-2 justify-center w-1/4' onClick={() => fileInputRef.current?.click()}>
+                                    <input
+                                        type="file"
+                                        accept="image/jpeg, image/png, image/gif"
+                                        onChange={handleImageUpload}
+                                        style={{ display: 'none' }}
+                                        ref={fileInputRef}
+                                    />
                                     <button className="text-gray-600">
                                         <IconFolder className='text-white' />
                                     </button>
@@ -278,7 +291,9 @@ const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ currentIndex, onDel
                                 value={linkArray[descriptionData.index][currentIndex]}
                                 onChange={handleChange}
                             />
-                            <IconLink />
+                            {
+                                (currentModeType==="categories") ? (<IconEdit/>) : (<IconLink />)
+                            }
 
                         </div>
                     </div>
