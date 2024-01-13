@@ -162,7 +162,7 @@ const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ currentIndex, onDel
     }
 
   // var type = reader.result as string
-  //console.log(type.split(';')[0])
+  //console.log(type.split(';')[0]) 
 
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
 
