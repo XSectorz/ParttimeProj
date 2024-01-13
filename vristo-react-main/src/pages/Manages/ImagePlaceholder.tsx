@@ -12,10 +12,12 @@ import IconTrash from '../../components/Icon/IconTrash';
 import Swal from 'sweetalert2';
 import { useDispatch } from 'react-redux';
 import { setUploadedPhoto } from './photoSlice';
+import Index from '../Index';
+import { number } from 'yup';
 
 interface ImagePlaceholderProps {
     onDelete: () => void;
-    index: number;
+    currentIndex: number;
     imageArray: string[]
     imagePlaceholders: number[];
     linkArray: string[]
@@ -23,9 +25,10 @@ interface ImagePlaceholderProps {
     setLinkArray: (mode: string[]) => void;
 }
 
-const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ index, onDelete, imageArray, setImageArray,imagePlaceholders,linkArray,setLinkArray }) => {
+const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ currentIndex, onDelete, imageArray, setImageArray,imagePlaceholders,linkArray,setLinkArray }) => {
     const [showDropdown, setShowDropdown] = useState(false);
     const fileInputRef = useRef<HTMLInputElement | null>(null);
+
     const dispatch = useDispatch();
     const onEdit = () => {
         setShowDropdown(!showDropdown);
@@ -46,27 +49,32 @@ const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ index, onDelete, im
             }
         }).then((result) => {
             if (result.isConfirmed) {
+                //console.log("DELETE");
+                //console.log(currentIndex)
+                
+                var tempImgArray = imageArray.filter((_, data) => data !== currentIndex);
+                //console.log(tempImgArray)
+                setImageArray(tempImgArray)
                 onDelete();
             }
         });
     }
 
     useEffect(() => {
-        console.log("change");
-        dispatch(setUploadedPhoto(imageArray));
-      }, [imageArray]);
+        dispatch(setUploadedPhoto(imageArray.filter((img) => (img !== '' && img !== 'test'))));
+    }, [imageArray]);
+
 
     const handleImageUp = () => {
-        if(index >= 1) {
-            console.log('up');
+        if(currentIndex >= 1) {
             var tempImgArray = [...imageArray]
             var tempLinkArray = [...linkArray]
-            const tempImg = tempImgArray[index] 
-            const tempLink = tempLinkArray[index]
-            tempImgArray[index] = tempImgArray[index-1]
-            tempLinkArray[index] = tempLinkArray[index-1]
-            tempImgArray[index-1] = tempImg
-            tempLinkArray[index-1] = tempLink
+            const tempImg = tempImgArray[currentIndex] 
+            const tempLink = tempLinkArray[currentIndex]
+            tempImgArray[currentIndex] = tempImgArray[currentIndex-1]
+            tempLinkArray[currentIndex] = tempLinkArray[currentIndex-1]
+            tempImgArray[currentIndex-1] = tempImg
+            tempLinkArray[currentIndex-1] = tempLink
             setImageArray(tempImgArray)
             setLinkArray(tempLinkArray)
         }
@@ -74,24 +82,27 @@ const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ index, onDelete, im
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         var tempLinkArray = [...linkArray]
-        tempLinkArray[index] = event.target.value;
+        tempLinkArray[currentIndex] = event.target.value;
         setLinkArray(tempLinkArray)
       };
 
     const handleImageDown = () => {
         //console.log(imageArray.length)
         //console.log(imageArray)
-        if(imagePlaceholders.length > 1) {
-            if(imagePlaceholders.length !== index+1) {
-                if(index < 3) {
+
+        //console.log(imagePlaceholders)
+
+        if(imageArray.length > 1) {
+            if(imageArray.length !== currentIndex+1) {
+                if(currentIndex < 3) {
                     var tempImgArray = [...imageArray]
                     var tempLinkArray = [...linkArray]
-                    const tempImg = tempImgArray[index] 
-                    const tempLink = tempLinkArray[index]
-                    tempImgArray[index] = tempImgArray[index+1]
-                    tempLinkArray[index] = tempLinkArray[index+1]
-                    tempLinkArray[index+1] = tempLink
-                    tempImgArray[index+1] = tempImg
+                    const tempImg = tempImgArray[currentIndex] 
+                    const tempLink = tempLinkArray[currentIndex]
+                    tempImgArray[currentIndex] = tempImgArray[currentIndex+1]
+                    tempLinkArray[currentIndex] = tempLinkArray[currentIndex+1]
+                    tempLinkArray[currentIndex+1] = tempLink
+                    tempImgArray[currentIndex+1] = tempImg
                     setImageArray(tempImgArray)
                     setLinkArray(tempLinkArray)
                 }
@@ -100,14 +111,16 @@ const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ index, onDelete, im
     }
 
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+
         const file = e.target.files && e.target.files[0];
 
         if (file) {
             const reader = new FileReader();
 
             reader.onloadend = () => {
+            
                 const newArray = [...imageArray];
-                newArray[index] = reader.result as string;
+                newArray[currentIndex] = reader.result as string;
                 setImageArray(newArray);
                 //console.log(newArray);
                 dispatch(setUploadedPhoto(newArray));
@@ -137,9 +150,8 @@ const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ index, onDelete, im
                 </div>
                 <div className="flex-grow">
                     <div className="flex rounded-lg items-center justify-between mb-3 border border-8d8d8f">
-                        <div className="w-full h-48 bg-[#FFFFFF] rounded-md relative" style={{ backgroundImage: `url('${imageArray[index] || 'https://storage.googleapis.com/proudcity/mebanenc/uploads/2021/03/placeholder-image.png'}')`, backgroundSize: "cover", backgroundPosition: "center" }}>
+                    <div className="w-full h-48 bg-[#FFFFFF] rounded-md relative" style={{ backgroundImage: (imageArray[currentIndex] !== "test") ?  `url(${imageArray[currentIndex]})` : 'url(https://storage.googleapis.com/proudcity/mebanenc/uploads/2021/03/placeholder-image.png)', backgroundSize: "cover", backgroundPosition: "center" }}>
                             <div className="flex bg-[#808080] opacity-75 absolute bottom-0 left-0 right-0 justify-around px-2">
-
                                 <div className='flex justify-center w-1/4 py-2' onClick={onPencil} style={{ cursor: 'pointer' }}>
                                     <button className="text-gray-600">
                                         <IconPencil className='text-white' />
@@ -198,7 +210,7 @@ const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ index, onDelete, im
                                 type="text"
                                 placeholder="เพิ่มลิงค์ (ไม่จำเป็น)"
                                 className="w-full p-2 outline-none"
-                                value={linkArray[index]}
+                                value={linkArray[currentIndex]}
                                 onChange={handleChange}
                             />
                             <IconLink />
