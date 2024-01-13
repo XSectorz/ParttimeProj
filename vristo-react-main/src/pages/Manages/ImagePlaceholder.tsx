@@ -34,7 +34,7 @@ const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ index, onDelete, im
     const onPencil = () => {
         Swal.fire({
             title: 'ยืนยันการลบ',
-            html: '<div class="text-center" style="padding: 0em;">คุณแน่ใจที่จะลบรูปนี้ออกใช่หรือไม่?</div>',
+            html: '<div class="text-center" style="padding-left: 2em;">คุณแน่ใจที่จะลบรูปนี้ออกใช่หรือไม่?</div>',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#00ab55',

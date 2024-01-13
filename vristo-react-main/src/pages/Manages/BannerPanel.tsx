@@ -53,7 +53,7 @@ interface InfoDataItem {
             Swal.fire({
                 icon: 'warning',
                 title: 'Warning',
-                html: '<div class="text-center" style="padding: 0em;">สามารถเพิ่มรูปภาพ/วิดีโอ ได้สูงสุด 4 รูปเท่านั้น</div>',
+                html: '<div class="text-center" style="padding-left: 2em;">สามารถเพิ่มรูปภาพ/วิดีโอ ได้สูงสุด 4 รูปเท่านั้น</div>',
                 //textColor:'#ff5733',
                 confirmButtonColor: '#00ab55',
             });
