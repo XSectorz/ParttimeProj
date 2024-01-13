@@ -167,12 +167,31 @@ const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ currentIndex, onDel
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
 
         const file = e.target.files && e.target.files[0];
-
         if (file) {
             const reader = new FileReader();
 
             reader.onloadend = () => {
-                
+                const image = new Image();
+                image.src = reader.result as string;
+                const width = image.width;
+                const height = image.height;
+                const sizeInBytes = file.size;
+                const sizeInKb = sizeInBytes / 1024;
+                //console.log(`Width: ${width}px`);
+                //console.log(`Height: ${height}px`);
+                console.log(`Size: ${sizeInKb} KB`);
+
+                if(sizeInKb > 2 * 1024 * 1024) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        html: '<div class="text-center" style="padding-left: 2em;">ขนาดไฟล์ไม่ตรงตามเงื่อนไข</div>',
+                        //textColor:'#ff5733',
+                        confirmButtonColor: '#00ab55',
+                    });
+                    return
+                }
+
                 if(descriptionData)  {
                     //console.log("Uploaded")
                     const newArray = imageArray.map(row => [...row]);

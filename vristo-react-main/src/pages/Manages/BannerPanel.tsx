@@ -115,7 +115,7 @@ const BannerPanel: React.FC<BannerPanelProps> = ({ currentMode,setCurrentMode })
                         <p className='text-lg font-nunito font-extrabold ml-2'>{infoDescriptionData?.title_th}</p>
                         <p className='text-lg font-nunito font-bold ml-2'>{infoDescriptionData?.title_eng}</p>
                     </div>
-                    <button className="flex" onClick={() => setCurrentMode("")}>
+                    <button className="flex pr-2" onClick={() => setCurrentMode("")}>
                         <IconX className="w-5 h-5" />
                     </button>
                 </div>
