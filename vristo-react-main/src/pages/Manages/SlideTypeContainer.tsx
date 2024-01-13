@@ -22,6 +22,7 @@ interface SlideTypeContainerProps {
 
 const SlideTypeContainer: React.FC<SlideTypeContainerProps> = ({ currentIndex, setCurrentIndex }) => {
     const categoriesPhoto = useSelector((state: IRootState) => state.photo.categoriesPhoto);
+    const categoriesTitle = useSelector((state: IRootState) => state.photo.categoriesTitle);
     const defaultCardTitles = Array.from({ length: 14 }, (_, index) => `อาหารเสริม${index + 1}`);
 
   return (
@@ -45,7 +46,7 @@ const SlideTypeContainer: React.FC<SlideTypeContainerProps> = ({ currentIndex, s
           {/* Map over the categoriesPhoto and use default cards if needed */}
           {defaultCardTitles.map((title, index) => (
             <SwiperSlide key={index} className='swiper-slide-show'>
-              <SlideTypeCard title={title} imgUrl={categoriesPhoto?.[index]} />
+              <SlideTypeCard title={categoriesTitle?.[index] || "ชื่อหมวดหมู่"} imgUrl={categoriesPhoto?.[index]} />
             </SwiperSlide>
           ))}
         </Swiper>

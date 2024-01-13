@@ -11,9 +11,10 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 import IconTrash from '../../components/Icon/IconTrash';
 import Swal from 'sweetalert2';
 import { useDispatch } from 'react-redux';
-import { setUploadedPhoto, setCategoriesPhoto } from './photoSlice';
+import { setUploadedPhoto, setCategoriesPhoto ,setCategoriesTitle } from './photoSlice';
 import Index from '../Index';
 import { number } from 'yup';
+import IconEdit from '../../components/Icon/IconEdit';
 
 interface ImagePlaceholderProps {
     onDelete: () => void;
@@ -89,6 +90,7 @@ const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ currentMode, curren
         var tempLinkArray = [...linkArray]
         tempLinkArray[currentIndex] = event.target.value;
         setLinkArray(tempLinkArray)
+        dispatch(setCategoriesTitle(tempLinkArray));
     };
 
     const handleImageDown = () => {
@@ -96,7 +98,7 @@ const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ currentMode, curren
         //console.log(imageArray)
 
         //console.log(imagePlaceholders)
-        if(currentMode === 'banners'){
+        if (currentMode === 'banners') {
             if (imageArray.length > 1) {
                 if (imageArray.length !== currentIndex + 1) {
                     if (currentIndex < 3) {
@@ -114,7 +116,7 @@ const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ currentMode, curren
                 }
             }
         }
-        if(currentMode === 'categories'){
+        if (currentMode === 'categories') {
             if (imageArray.length > 1) {
                 if (imageArray.length !== currentIndex + 1) {
                     if (currentIndex < 13) {
@@ -240,14 +242,29 @@ const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ currentMode, curren
                     </div>
                     <div className="flex">
                         <div className="bg-white rounded-lg p-2 w-full flex justify-between items-center border border-8d8d8f">
-                            <input
-                                type="text"
-                                placeholder="เพิ่มลิงค์ (ไม่จำเป็น)"
-                                className="w-full p-2 outline-none"
-                                value={linkArray[currentIndex]}
-                                onChange={handleChange}
-                            />
-                            <IconLink />
+                            {currentMode === 'banners' ? (
+                                <>
+                                    <input
+                                        type="text"
+                                        placeholder="เพิ่มลิงค์ (ไม่จำเป็น)"
+                                        className="w-full p-2 outline-none"
+                                        value={linkArray[currentIndex]}
+                                        onChange={handleChange}
+                                    />
+                                    <IconLink />
+                                </>
+                            ) : currentMode === 'categories' ? (
+                                <>
+                                    <input
+                                        type="text"
+                                        placeholder="ตั้งชื่อหมวดหมู่"
+                                        className="w-full p-2 outline-none"
+                                        value={linkArray[currentIndex]}
+                                        onChange={handleChange}
+                                    />
+                                    <IconEdit />
+                                </>
+                            ) : null}
 
                         </div>
                     </div>
