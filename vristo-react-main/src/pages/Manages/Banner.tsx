@@ -36,7 +36,7 @@ const ManageBanner = () => {
                         <BannerPreview currentMode={currentMode} setCurrentMode={setCurrentMode}/>
                         </div>
                     </div>
-                    <div className={`flex w-full h-full ${currentMode === "" ? 'hidden' : ''}`}>
+                    <div className={`flex flex-col w-full h-full ${currentMode === "" ? 'hidden' : ''}`}>
                         <BannerPanel currentMode={currentMode} setCurrentMode={setCurrentMode}/>
                     </div>
                 </div>

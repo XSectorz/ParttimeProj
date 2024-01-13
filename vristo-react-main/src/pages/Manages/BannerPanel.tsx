@@ -130,21 +130,25 @@ const BannerPanel: React.FC<BannerPanelProps> = ({ currentMode, setCurrentMode }
 
     return (
         <>
+            {/* Sticky header at the top */}
+            <div className="sticky top-0 z-10 w-full bg-white">
+                <div className="flex flex-row justify-between w-full mt-6">
+                    <div className="flex items-center justify-center ">
+                        <p className='text-lg font-nunito font-extrabold ml-2'>{infoDescriptionData?.title_th}</p>
+                        <p className='text-lg font-nunito font-bold ml-2'>{infoDescriptionData?.title_eng}</p>
+                    </div>
+                    <button className="flex" onClick={() => setCurrentMode("")}>
+                        <IconX className="w-5 h-5" />
+                    </button>
+                </div>
+                <div className='flex font-nunito text-sm text-[#8d8d8f] break-words mt-4 mb-2 ml-2 mr-2'>
+                    {infoDescriptionData?.description}
+                </div>
+                <div className='flex w-full h-[3px] bg-[#8d8d8f] mt-2' />
+            </div>
+
             <PerfectScrollbar className="w-full h-[calc(100vh-80px)] relative">
                 <div className="flex flex-col px-4 w-full bg-[#FFFFFF] pb-4">
-                    <div className="flex flex-row justify-between w-full mt-6">
-                        <div className="flex items-center justify-center ">
-                            <p className='text-lg font-nunito font-extrabold mr-2'>{infoDescriptionData?.title_th}</p>
-                            <p className='text-lg font-nunito font-bold'>{infoDescriptionData?.title_eng}</p>
-                        </div>
-                        <button className="flex" onClick={() => setCurrentMode("")}>
-                            <IconX className="w-5 h-5" />
-                        </button>
-                    </div>
-                    <div className='flex font-nunito text-sm text-[#8d8d8f] break-words mt-4 mb-2'>
-                        {infoDescriptionData?.description}
-                    </div>
-                    <div className='flex w-full h-[3px] bg-[#8d8d8f] mt-2' />
                     <div className='flex flex-col w-full px-4 mt-4'>
                         <div className="flex font-nunito font-bold">
                             อัปโหลดรูปภาพ/วิดีโอ
@@ -192,7 +196,7 @@ const BannerPanel: React.FC<BannerPanelProps> = ({ currentMode, setCurrentMode }
                                     key={index}
                                     currentMode={currentMode}
                                     currentIndex={index}
-                                    imageArray={categoriesArray} 
+                                    imageArray={categoriesArray}
                                     imagePlaceholders={imagePlaceholders}
                                     setImageArray={setCategorieArray}
                                     linkArray={linkArray}
@@ -216,11 +220,17 @@ const BannerPanel: React.FC<BannerPanelProps> = ({ currentMode, setCurrentMode }
                             </span>
                         </div>
                     </div>
+
                 </div>
-
-
-
-
+                {/* Sticky footer at the bottom */}
+                <div className="sticky bottom-0 z-50 bg-white p-4 w-full" style={{ boxShadow: "0px 2px 20px 0px rgba(0, 0, 0, 0.1)" }}>
+                    <div className="flex justify-end items-center">
+                        <button className="bg-blue-500 text-white px-4 py-2 rounded">
+                            บันทึกฉบับร่าง
+                        </button>
+                    </div>
+                </div>
+                {/* End */}
             </PerfectScrollbar>
         </>
     )
