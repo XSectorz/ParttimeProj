@@ -19,12 +19,16 @@ const SlideTypeCard: React.FC<slideTypeInterface> = ({ title,img,index }) => {
             <div className="flex w-full bg-[#363a44] rounded-lg" style={{ height: "80%"}}>
                 {img && img !== 'test' && <img src={img} alt={title} className="w-full h-full object-cover rounded-lg"/>}
             </div>
-            <div className="flex mt-1" style={{ height: "20%"}}>
-                {(categoriesTitle && categoriesTitle?.[index] !== '' && categoriesTitle?.[index]) ? (
-                        <div>{categoriesTitle?.[index]}</div>
-                    ) : (
-                        <div>{title}</div>
-                )}
+            <div className="flex justify-center items-center w-full mt-1" style={{ height: "20%"}}>
+                <div className='flex truncate ...'>
+                    <p className="flex truncate ...">
+                            {(categoriesTitle && categoriesTitle?.[index] !== '' && categoriesTitle?.[index]) ? (
+                                <div className='truncate'>{categoriesTitle?.[index]}</div>
+                            ) : (
+                                <div className='truncate'>{title}</div>
+                        )}
+                    </p>
+                </div>
             </div>
         </div>
     )
