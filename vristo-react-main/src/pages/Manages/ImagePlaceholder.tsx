@@ -231,7 +231,7 @@ const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ currentIndex, onDel
                     <div className="w-full h-48 bg-[#FFFFFF] rounded-md relative" style={{ backgroundImage: 
                         ( descriptionData && imageArray[descriptionData.index][currentIndex] !== "test") ?  
                         (
-                            (imageArray[descriptionData.index][currentIndex].split(':')[1].includes("video")) ? (`url(/assets/images/placeholder-video.png)`) : (`url(${imageArray[descriptionData.index][currentIndex]})`)
+                            (imageArray[descriptionData.index][currentIndex] && imageArray[descriptionData.index][currentIndex].split(':')[1].includes("video")) ? (`url(/assets/images/placeholder-video.png)`) : (`url(${imageArray[descriptionData.index][currentIndex]})`)
                         ) : 
                         'url(/assets/images/placeholder-image.png)',
                         
