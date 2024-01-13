@@ -11,7 +11,7 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 import IconTrash from '../../components/Icon/IconTrash';
 import Swal from 'sweetalert2';
 import { useDispatch } from 'react-redux';
-import { setUploadedPhoto } from './photoSlice';
+import { setCategoriesPhoto, setCategoriesTitle, setUploadedPhoto } from './photoSlice';
 import Index from '../Index';
 import { number } from 'yup';
 
@@ -93,7 +93,16 @@ const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ currentIndex, onDel
 
     useEffect(() => {
         dispatch(setUploadedPhoto(imageArray[0].filter((img) => (img !== '' && img !== 'test'))));
-    }, [imageArray]);
+    }, [imageArray[0]]);
+
+    useEffect(() => {
+        //console.log("Update photo")
+        dispatch(setCategoriesPhoto(imageArray[1]))
+    }, [imageArray[1]]);
+
+    useEffect(() => {
+        dispatch(setCategoriesTitle(linkArray[1]))
+    }, [linkArray[1]]);
 
 
     const handleImageUp = () => {
@@ -118,6 +127,9 @@ const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ currentIndex, onDel
             var tempLinkArray = linkArray.map(row => [...row]);
             tempLinkArray[descriptionData.index][currentIndex] = event.target.value;
             setLinkArray(tempLinkArray)
+            dispatch(setCategoriesTitle(tempLinkArray[descriptionData.index]))
+            console.log("Change!!!")
+            console.log(tempLinkArray[descriptionData.index])
         }
       };
 

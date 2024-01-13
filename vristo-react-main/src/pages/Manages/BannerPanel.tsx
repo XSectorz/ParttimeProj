@@ -6,7 +6,7 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 import React, { useState, useEffect  } from 'react';
 import Swal from 'sweetalert2';
 import { useDispatch } from 'react-redux';
-import { setUploadedPhoto } from './photoSlice';
+import { setCategoriesPhoto, setCategoriesTitle, setUploadedPhoto } from './photoSlice';
 
 interface BannerPanelProps {
     currentMode: string;
@@ -23,7 +23,7 @@ interface InfoDataItem {
 }
 
 
-  const BannerPanel: React.FC<BannerPanelProps> = ({ currentMode,setCurrentMode }) => {
+const BannerPanel: React.FC<BannerPanelProps> = ({ currentMode,setCurrentMode }) => {
 
     const infoData = [
         {
@@ -48,13 +48,28 @@ interface InfoDataItem {
     const [linkArray , setLinkArray] = useState<string [][] >([[''],['']]);
     const [infoDescriptionData, setInfoDescriptionData] = useState<InfoDataItem>(infoData[0]);
 
+    
     const handleDelete = (indexToDelete: number) => {
-        
-        const array = imageArray.filter( (_,index) => index !== indexToDelete )
-        setImageArray([...array])
+
+        var tempImgArray = imageArray.map(row => [...row]);
+        var tempLinkArray = linkArray.map(row => [...row]);
+        const array = imageArray[infoDescriptionData.index].filter( (_,index) => index !== indexToDelete )
+        const arraylink = linkArray[infoDescriptionData.index].filter( (_,index) => index !== indexToDelete )
+        tempImgArray[infoDescriptionData.index] = array
+        tempLinkArray[infoDescriptionData.index] = arraylink
+        setImageArray([...tempImgArray])
+        setLinkArray([...tempLinkArray])
+
         if(array.length === 0) {
-            dispatch(setUploadedPhoto([]));
+            if(infoDescriptionData.index === 0) {
+                dispatch(setUploadedPhoto([]));
+            } else if(infoDescriptionData.index === 1) {
+                dispatch(setCategoriesPhoto([]));
+                dispatch(setCategoriesTitle([]));
+            }
         }
+
+
     }
 
     useEffect(() => {
@@ -136,7 +151,7 @@ interface InfoDataItem {
                     </div>
                     <div className='flex-col'>
                         {   
-                            imageArray[infoDescriptionData.index].map((items,index) => { 
+                            imageArray[infoDescriptionData.index] && imageArray[infoDescriptionData.index].map((items,index) => { 
                             return ( 
                                 <ImagePlaceholder
                                     key={index}
@@ -157,7 +172,9 @@ interface InfoDataItem {
                             onClick={addImagePlaceholder}
                             role="button">
                             <IconPlus className='mt-[3px] text-[#4361EE]' />
-                            <span className="font-notosans text-lg text-[#4361EE] ml-2">เพิ่มรูปภาพ/วิดีโอ ({imageArray[infoDescriptionData.index].length}/{infoDescriptionData?.datalength})</span>
+                            <span className="font-notosans text-lg text-[#4361EE] ml-2">
+                                เพิ่มรูปภาพ/วิดีโอ ({imageArray[infoDescriptionData.index] ? imageArray[infoDescriptionData.index].length : 0}/{infoDescriptionData?.datalength})
+                            </span>
                         </div>
                     </div>
                 </div>
