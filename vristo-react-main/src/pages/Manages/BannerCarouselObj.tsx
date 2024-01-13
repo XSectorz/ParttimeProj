@@ -6,7 +6,6 @@ import { Autoplay } from 'swiper';
 import { useSelector } from 'react-redux';
 import { IRootState } from '../../store';
 
-
 const BannerCarouselObj = () => {
 
     const themeConfig = useSelector((state: IRootState) => state.themeConfig);
@@ -32,7 +31,22 @@ const BannerCarouselObj = () => {
                             ) : (
                                 uploadedPhoto.filter(items => items !== "test").map((photoUrl, i) => (
                                     <SwiperSlide key={i}>
-                                        <img src={photoUrl} className="w-full max-h-80 object-cover" alt={`itemImage-${i}`} />
+                                        {
+                                            (photoUrl.split(";")[0].includes("video") || photoUrl.split(";")[0].includes("mp4")) ? 
+                                            (
+                                                <video
+                                                className="w-full max-h-80 object-cover"
+                                                controls={false}
+                                                controlsList="nodownload"
+                                                onClick={(e) => e.currentTarget.play()}
+                                                autoPlay loop muted disablePictureInPicture disableRemotePlayback
+                                                >
+                                                    <source src={photoUrl} type="video/mp4" />
+                                                </video>
+                                            ) : (
+                                                <img src={photoUrl} className="w-full max-h-80 object-cover" alt={`itemImage-${i}`} />
+                                            )
+                                        }
                                     </SwiperSlide>
                                 ))
                             )

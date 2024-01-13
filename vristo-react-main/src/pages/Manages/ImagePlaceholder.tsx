@@ -48,6 +48,7 @@ const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ currentIndex, onDel
 
     const [showDropdown, setShowDropdown] = useState(false);
     const fileInputRef = useRef<HTMLInputElement | null>(null);
+    const fileInputVideoRef = useRef<HTMLInputElement | null>(null);
     const [descriptionData,setDescriptionData] = useState<InfoDataItem>(infoData[0]);
 
     const dispatch = useDispatch();
@@ -159,6 +160,9 @@ const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ currentIndex, onDel
         }
     }
 
+  // var type = reader.result as string
+  //console.log(type.split(';')[0])
+
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
 
         const file = e.target.files && e.target.files[0];
@@ -179,7 +183,7 @@ const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ currentIndex, onDel
                     }
                 }
             };
-
+            
             reader.readAsDataURL(file);
         }
     };
@@ -229,7 +233,14 @@ const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ currentIndex, onDel
                                     </button>
                                 </div>
 
-                                <div className='flex border-l-2 justify-center w-1/4'>
+                                <div className='flex border-l-2 justify-center w-1/4'  onClick={() => fileInputVideoRef.current?.click()}>
+                                    <input
+                                        type="file"
+                                        accept="video/mp4"
+                                        onChange={handleImageUpload}
+                                        style={{ display: 'none' }}
+                                        ref={fileInputVideoRef}
+                                    />
                                     <button className="text-gray-600">
                                         <IconVideo className='text-white' />
                                     </button>
