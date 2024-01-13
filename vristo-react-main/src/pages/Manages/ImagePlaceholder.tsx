@@ -207,7 +207,7 @@ const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ currentIndex, onDel
             reader.readAsDataURL(file);
         }
     };
-
+//
     return (
         <>
             <div className="bg-[#F6F6F6] border border-8d8d8f w-full p-4 shadow rounded-lg mb-4 flex">
