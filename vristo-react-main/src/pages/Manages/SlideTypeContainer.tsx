@@ -7,7 +7,8 @@ import { Grid } from 'swiper';
 import { useState } from 'react';
 import BannerCarouselObj from './BannerCarouselObj';
 import SlideTypeCard from './SlideTypeCard';
-
+import { useSelector } from 'react-redux';
+import { IRootState } from '../../store';
 import 'swiper/css';
 import 'swiper/css/grid';
 import 'swiper/css/pagination';
@@ -20,42 +21,37 @@ interface SlideTypeContainerProps {
   }
 
 const SlideTypeContainer: React.FC<SlideTypeContainerProps> = ({ currentIndex, setCurrentIndex }) => {
-    return (
-        <>
-            <div className='flex flex-row h-[300px] mx-7'>
-                <Swiper
-                    slidesPerView={4}
-                    grid={{
-                        rows: 2,
-                    }}
-                    spaceBetween={20}
-                    pagination={{
-                        clickable: true,
-                    }}
-                    modules={[Grid]}
-                    className="mySwiper"
-                    onSlideChange={(swiper) => {
-                        setCurrentIndex(swiper.activeIndex);
-                    }}
-                >
-                    <SwiperSlide className='swiper-slide-show'><SlideTypeCard title="อาหารเสริม1" /></SwiperSlide>
-                    <SwiperSlide className='swiper-slide-show'><SlideTypeCard title="อาหารเสริม2" /></SwiperSlide>
-                    <SwiperSlide className='swiper-slide-show'><SlideTypeCard title="อาหารเสริม3" /></SwiperSlide>
-                    <SwiperSlide className='swiper-slide-show'><SlideTypeCard title="อาหารเสริม4" /></SwiperSlide>
-                    <SwiperSlide className='swiper-slide-show'><SlideTypeCard title="อาหารเสริม5" /></SwiperSlide>
-                    <SwiperSlide className='swiper-slide-show'><SlideTypeCard title="อาหารเสริม" /></SwiperSlide>
-                    <SwiperSlide className='swiper-slide-show'><SlideTypeCard title="อาหารเสริม" /></SwiperSlide>
-                    <SwiperSlide className='swiper-slide-show'><SlideTypeCard title="อาหารเสริม" /></SwiperSlide>
-                    <SwiperSlide className='swiper-slide-show'><SlideTypeCard title="อาหารเสริม" /></SwiperSlide>
-                    <SwiperSlide className='swiper-slide-show'><SlideTypeCard title="อาหารเสริม" /></SwiperSlide>
-                    <SwiperSlide className='swiper-slide-show'><SlideTypeCard title="อาหารเสริม" /></SwiperSlide>
-                    <SwiperSlide className='swiper-slide-show'><SlideTypeCard title="อาหารเสริม" /></SwiperSlide>
-                    <SwiperSlide className='swiper-slide-show'><SlideTypeCard title="อาหารเสริม" /></SwiperSlide>
-                    <SwiperSlide className='swiper-slide-show'><SlideTypeCard title="อาหารเสริม" /></SwiperSlide>
-                </Swiper>
-            </div>
-        </>
-    )
+    const categoriesPhoto = useSelector((state: IRootState) => state.photo.categoriesPhoto);
+    const defaultCardTitles = Array.from({ length: 14 }, (_, index) => `อาหารเสริม${index + 1}`);
+
+  return (
+    <>
+      <div className='flex flex-row h-[300px] mx-7'>
+        <Swiper
+          slidesPerView={4}
+          grid={{
+            rows: 2,
+          }}
+          spaceBetween={20}
+          pagination={{
+            clickable: true,
+          }}
+          modules={[Grid]}
+          className="mySwiper"
+          onSlideChange={(swiper) => {
+            setCurrentIndex(swiper.activeIndex);
+          }}
+        >
+          {/* Map over the categoriesPhoto and use default cards if needed */}
+          {defaultCardTitles.map((title, index) => (
+            <SwiperSlide key={index} className='swiper-slide-show'>
+              <SlideTypeCard title={title} imgUrl={categoriesPhoto?.[index]} />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </div>
+    </>
+  );
 }
 
 export default SlideTypeContainer;

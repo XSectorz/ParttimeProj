@@ -3,10 +3,10 @@ import IconPlus from '../../components/Icon/IconPlus';
 import IconX from '../../components/Icon/IconX';
 import ImagePlaceholder from './ImagePlaceholder';
 import PerfectScrollbar from 'react-perfect-scrollbar';
-import React, { useState, useEffect  } from 'react';
+import React, { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
 import { useDispatch } from 'react-redux';
-import { setUploadedPhoto } from './photoSlice';
+import { setUploadedPhoto, setCategoriesPhoto } from './photoSlice';
 
 interface BannerPanelProps {
     currentMode: string;
@@ -26,14 +26,17 @@ interface ImageCarouselPlaceholder {
     imgIndex: number
 }
 
-  const BannerPanel: React.FC<BannerPanelProps> = ({ currentMode,setCurrentMode }) => {
-    
+const BannerPanel: React.FC<BannerPanelProps> = ({ currentMode, setCurrentMode }) => {
+
     const dispatch = useDispatch();
 
     const [imagePlaceholders, setImagePlaceholders] = useState([1]);
-    const [imageArray , setImageArray] = useState<string [] >(['test']);
-    const [linkArray , setLinkArray] = useState<string [] >(['','','','']);
-    const [imageList,setImageList] = useState<ImageCarouselPlaceholder[] | null>(null);
+    const [imageArray, setImageArray] = useState<string[]>(['test']);
+    const [linkArray, setLinkArray] = useState<string[]>(['', '', '', '']);
+
+    const [categoriesArray, setCategorieArray] = useState<string[]>(['test']);
+    const [linkCatArray, setLinkCatArray] = useState<string[]>(['', '', '', '', '', '', '', '', '', '', '', '', '', '']);
+    const [imageList, setImageList] = useState<ImageCarouselPlaceholder[] | null>(null);
     const [infoDescriptionData, setInfoDescriptionData] = useState<InfoDataItem | null>(null);
     const infoData = [
         {
@@ -49,11 +52,19 @@ interface ImageCarouselPlaceholder {
     ]
 
     const handleDelete = (indexToDelete: number) => {
-        
-        const array = imageArray.filter( (_,index) => index !== indexToDelete )
-        setImageArray([...array])
-        if(array.length === 0) {
-            dispatch(setUploadedPhoto([]));
+        if (currentMode === 'banners') {
+            const array = imageArray.filter((_, index) => index !== indexToDelete)
+            setImageArray([...array])
+            if (array.length === 0) {
+                dispatch(setUploadedPhoto([]));
+            }
+        }
+        if (currentMode === 'categories') {
+            const array = categoriesArray.filter((_, index) => index !== indexToDelete)
+            setCategorieArray([...array])
+            if (array.length === 0) {
+                dispatch(setCategoriesPhoto([]));
+            }
         }
     }
 
@@ -61,10 +72,11 @@ interface ImageCarouselPlaceholder {
         // ตรวจสอบเมื่อ currentMode เปลี่ยนแปลง
         if (currentMode === 'categories') {
             setInfoDescriptionData(infoData[1]);
-        } else {
+        }
+        if (currentMode === 'banners') {
             setInfoDescriptionData(infoData[0]);
         }
-      }, [currentMode]);
+    }, [currentMode]);
     /*
       useEffect(() => {
         
@@ -79,20 +91,40 @@ interface ImageCarouselPlaceholder {
 
 
     const addImagePlaceholder = () => {
-        if (imageArray.length < 4) {
-            const array = [...imageArray]
-            array.push('test')
-            setImageArray([...array]);
+        if (currentMode === 'banners') {
+            if (imageArray.length < 4) {
+                const array = [...imageArray]
+                array.push('test')
+                setImageArray([...array]);
 
-        } else {
-            Swal.fire({
-                icon: 'warning',
-                title: 'Warning',
-                html: '<div class="text-center" style="padding-left: 2em;">สามารถเพิ่มรูปภาพ/วิดีโอ ได้สูงสุด 4 รูปเท่านั้น</div>',
-                //textColor:'#ff5733',
-                confirmButtonColor: '#00ab55',
-            });
+            } else {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Warning',
+                    html: '<div class="text-center" style="padding-left: 2em;">สามารถเพิ่มรูปภาพ/วิดีโอ ได้สูงสุด 4 รูปเท่านั้น</div>',
+                    //textColor:'#ff5733',
+                    confirmButtonColor: '#00ab55',
+                });
+            }
         }
+
+        if (currentMode === 'categories') {
+            if (categoriesArray.length < 14) {
+                const array = [...categoriesArray]
+                array.push('test')
+                setCategorieArray([...array]);
+
+            } else {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Warning',
+                    html: '<div class="text-center" style="padding-left: 2em;">สามารถเพิ่มรูปภาพ/วิดีโอ ได้สูงสุด 14 รูปเท่านั้น</div>',
+                    //textColor:'#ff5733',
+                    confirmButtonColor: '#00ab55',
+                });
+            }
+        }
+
     };
 
 
@@ -140,29 +172,48 @@ interface ImageCarouselPlaceholder {
                         </div>
                     </div>
                     <div className='flex-col'>
-                        {   
-                            imageArray.map((items,index) => { 
-                            return ( 
+                        {currentMode === 'banners'
+                            ? imageArray.map((items, index) => (
                                 <ImagePlaceholder
                                     key={index}
+                                    currentMode={currentMode}
                                     currentIndex={index}
                                     imageArray={imageArray}
                                     imagePlaceholders={imagePlaceholders}
                                     setImageArray={setImageArray}
                                     linkArray={linkArray}
                                     setLinkArray={setLinkArray}
-                                    onDelete={() => handleDelete(index)} 
+                                    onDelete={() => handleDelete(index)}
                                 />
-                            );
-                            })
-                        }
+                            ))
+                            : currentMode === 'categories' &&
+                            categoriesArray.map((items, index) => (
+                                <ImagePlaceholder
+                                    key={index}
+                                    currentMode={currentMode}
+                                    currentIndex={index}
+                                    imageArray={categoriesArray} 
+                                    imagePlaceholders={imagePlaceholders}
+                                    setImageArray={setCategorieArray}
+                                    linkArray={linkArray}
+                                    setLinkArray={setLinkArray}
+                                    onDelete={() => handleDelete(index)}
+                                />
+                            ))}
                     </div>
                     <div className="flex justify-center items-center h-full">
                         <div className="flex flex-row border-dashed border-[3px] border-[#4361EE] p-4 w-full rounded-lg justify-center"
                             onClick={addImagePlaceholder}
                             role="button">
                             <IconPlus className='mt-[3px] text-[#4361EE]' />
-                            <span className="font-notosans text-lg text-[#4361EE] ml-2">เพิ่มรูปภาพ/วิดีโอ ({imagePlaceholders.length}/4)</span>
+                            <span className="font-notosans text-lg text-[#4361EE] ml-2">
+                                {currentMode === 'banners'
+                                    ? `เพิ่มรูปภาพ/วิดีโอ (${imageArray.length}/4)`
+                                    : currentMode === 'categories'
+                                        ? `เพิ่มรูปภาพ/วิดีโอ (${categoriesArray.length}/14)`
+                                        : 'เพิ่มรูปภาพ/วิดีโอ'
+                                }
+                            </span>
                         </div>
                     </div>
                 </div>

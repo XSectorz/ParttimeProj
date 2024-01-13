@@ -11,13 +11,14 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 import IconTrash from '../../components/Icon/IconTrash';
 import Swal from 'sweetalert2';
 import { useDispatch } from 'react-redux';
-import { setUploadedPhoto } from './photoSlice';
+import { setUploadedPhoto, setCategoriesPhoto } from './photoSlice';
 import Index from '../Index';
 import { number } from 'yup';
 
 interface ImagePlaceholderProps {
     onDelete: () => void;
     currentIndex: number;
+    currentMode: string;
     imageArray: string[]
     imagePlaceholders: number[];
     linkArray: string[]
@@ -25,7 +26,7 @@ interface ImagePlaceholderProps {
     setLinkArray: (mode: string[]) => void;
 }
 
-const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ currentIndex, onDelete, imageArray, setImageArray,imagePlaceholders,linkArray,setLinkArray }) => {
+const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ currentMode, currentIndex, onDelete, imageArray, setImageArray, imagePlaceholders, linkArray, setLinkArray }) => {
     const [showDropdown, setShowDropdown] = useState(false);
     const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -51,7 +52,7 @@ const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ currentIndex, onDel
             if (result.isConfirmed) {
                 //console.log("DELETE");
                 //console.log(currentIndex)
-                
+
                 var tempImgArray = imageArray.filter((_, data) => data !== currentIndex);
                 //console.log(tempImgArray)
                 setImageArray(tempImgArray)
@@ -61,20 +62,24 @@ const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ currentIndex, onDel
     }
 
     useEffect(() => {
-        dispatch(setUploadedPhoto(imageArray.filter((img) => (img !== '' && img !== 'test'))));
-    }, [imageArray]);
+        if (currentMode === 'banners') {
+            dispatch(setUploadedPhoto(imageArray.filter((img) => (img !== '' && img !== 'test'))));
+        } else if (currentMode === 'categories') {
+            dispatch(setCategoriesPhoto(imageArray.filter((img) => (img !== '' && img !== 'test'))));
+        }
+    }, [imageArray, currentMode]);
 
 
     const handleImageUp = () => {
-        if(currentIndex >= 1) {
+        if (currentIndex >= 1) {
             var tempImgArray = [...imageArray]
             var tempLinkArray = [...linkArray]
-            const tempImg = tempImgArray[currentIndex] 
+            const tempImg = tempImgArray[currentIndex]
             const tempLink = tempLinkArray[currentIndex]
-            tempImgArray[currentIndex] = tempImgArray[currentIndex-1]
-            tempLinkArray[currentIndex] = tempLinkArray[currentIndex-1]
-            tempImgArray[currentIndex-1] = tempImg
-            tempLinkArray[currentIndex-1] = tempLink
+            tempImgArray[currentIndex] = tempImgArray[currentIndex - 1]
+            tempLinkArray[currentIndex] = tempLinkArray[currentIndex - 1]
+            tempImgArray[currentIndex - 1] = tempImg
+            tempLinkArray[currentIndex - 1] = tempLink
             setImageArray(tempImgArray)
             setLinkArray(tempLinkArray)
         }
@@ -84,27 +89,46 @@ const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ currentIndex, onDel
         var tempLinkArray = [...linkArray]
         tempLinkArray[currentIndex] = event.target.value;
         setLinkArray(tempLinkArray)
-      };
+    };
 
     const handleImageDown = () => {
         //console.log(imageArray.length)
         //console.log(imageArray)
 
         //console.log(imagePlaceholders)
-
-        if(imageArray.length > 1) {
-            if(imageArray.length !== currentIndex+1) {
-                if(currentIndex < 3) {
-                    var tempImgArray = [...imageArray]
-                    var tempLinkArray = [...linkArray]
-                    const tempImg = tempImgArray[currentIndex] 
-                    const tempLink = tempLinkArray[currentIndex]
-                    tempImgArray[currentIndex] = tempImgArray[currentIndex+1]
-                    tempLinkArray[currentIndex] = tempLinkArray[currentIndex+1]
-                    tempLinkArray[currentIndex+1] = tempLink
-                    tempImgArray[currentIndex+1] = tempImg
-                    setImageArray(tempImgArray)
-                    setLinkArray(tempLinkArray)
+        if(currentMode === 'banners'){
+            if (imageArray.length > 1) {
+                if (imageArray.length !== currentIndex + 1) {
+                    if (currentIndex < 3) {
+                        var tempImgArray = [...imageArray]
+                        var tempLinkArray = [...linkArray]
+                        const tempImg = tempImgArray[currentIndex]
+                        const tempLink = tempLinkArray[currentIndex]
+                        tempImgArray[currentIndex] = tempImgArray[currentIndex + 1]
+                        tempLinkArray[currentIndex] = tempLinkArray[currentIndex + 1]
+                        tempLinkArray[currentIndex + 1] = tempLink
+                        tempImgArray[currentIndex + 1] = tempImg
+                        setImageArray(tempImgArray)
+                        setLinkArray(tempLinkArray)
+                    }
+                }
+            }
+        }
+        if(currentMode === 'categories'){
+            if (imageArray.length > 1) {
+                if (imageArray.length !== currentIndex + 1) {
+                    if (currentIndex < 13) {
+                        var tempImgArray = [...imageArray]
+                        var tempLinkArray = [...linkArray]
+                        const tempImg = tempImgArray[currentIndex]
+                        const tempLink = tempLinkArray[currentIndex]
+                        tempImgArray[currentIndex] = tempImgArray[currentIndex + 1]
+                        tempLinkArray[currentIndex] = tempLinkArray[currentIndex + 1]
+                        tempLinkArray[currentIndex + 1] = tempLink
+                        tempImgArray[currentIndex + 1] = tempImg
+                        setImageArray(tempImgArray)
+                        setLinkArray(tempLinkArray)
+                    }
                 }
             }
         }
@@ -118,12 +142,22 @@ const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ currentIndex, onDel
             const reader = new FileReader();
 
             reader.onloadend = () => {
-            
-                const newArray = [...imageArray];
-                newArray[currentIndex] = reader.result as string;
-                setImageArray(newArray);
-                //console.log(newArray);
-                dispatch(setUploadedPhoto(newArray));
+
+                if (currentMode === 'banners') {
+                    const newArray = [...imageArray];
+                    newArray[currentIndex] = reader.result as string;
+                    setImageArray(newArray);
+                    //console.log(newArray);
+                    console.log('Banner Array', newArray);
+                    dispatch(setUploadedPhoto(newArray));
+                }
+                else if (currentMode === 'categories') {
+                    const newArray = [...imageArray];
+                    newArray[currentIndex] = reader.result as string;
+                    setImageArray(newArray);
+                    console.log('Categories Array', newArray);
+                    dispatch(setCategoriesPhoto(newArray));
+                }
             };
 
             reader.readAsDataURL(file);
@@ -135,7 +169,7 @@ const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ currentIndex, onDel
             <div className="bg-[#F6F6F6] border border-8d8d8f w-full p-4 shadow rounded-lg mb-4 flex">
                 <div className="flex flex-col justify-between mr-4">
                     <button className="text-gray-600 hover:bg-gray-300 rounded-full p-2 mb-2"
-                    onClick={handleImageUp}>
+                        onClick={handleImageUp}>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 10.5 12 3m0 0 7.5 7.5M12 3v18" />
                         </svg>
@@ -150,7 +184,7 @@ const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ currentIndex, onDel
                 </div>
                 <div className="flex-grow">
                     <div className="flex rounded-lg items-center justify-between mb-3 border border-8d8d8f">
-                    <div className="w-full h-48 bg-[#FFFFFF] rounded-md relative" style={{ backgroundImage: (imageArray[currentIndex] !== "test") ?  `url(${imageArray[currentIndex]})` : 'url(https://storage.googleapis.com/proudcity/mebanenc/uploads/2021/03/placeholder-image.png)', backgroundSize: "cover", backgroundPosition: "center" }}>
+                        <div className="w-full h-48 bg-[#FFFFFF] rounded-md relative" style={{ backgroundImage: (imageArray[currentIndex] !== "test") ? `url(${imageArray[currentIndex]})` : 'url(https://storage.googleapis.com/proudcity/mebanenc/uploads/2021/03/placeholder-image.png)', backgroundSize: "cover", backgroundPosition: "center" }}>
                             <div className="flex bg-[#808080] opacity-75 absolute bottom-0 left-0 right-0 justify-around px-2">
                                 <div className='flex justify-center w-1/4 py-2' onClick={onPencil} style={{ cursor: 'pointer' }}>
                                     <button className="text-gray-600">
