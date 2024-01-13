@@ -207,7 +207,7 @@ const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ currentIndex, onDel
             reader.readAsDataURL(file);
         }
     };
-//
+
     return (
         <>
             <div className="bg-[#F6F6F6] border border-8d8d8f w-full p-4 shadow rounded-lg mb-4 flex">
@@ -230,8 +230,10 @@ const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ currentIndex, onDel
                     <div className="flex rounded-lg items-center justify-between mb-3 border border-8d8d8f">
                     <div className="w-full h-48 bg-[#FFFFFF] rounded-md relative" style={{ backgroundImage: 
                         ( descriptionData && imageArray[descriptionData.index][currentIndex] !== "test") ?  
-                        `url(${imageArray[descriptionData.index][currentIndex]})` : 
-                        'url(https://storage.googleapis.com/proudcity/mebanenc/uploads/2021/03/placeholder-image.png)',
+                        (
+                            (imageArray[descriptionData.index][currentIndex].split(':')[1].includes("video")) ? (`url(/assets/images/placeholder-video.png)`) : (`url(${imageArray[descriptionData.index][currentIndex]})`)
+                        ) : 
+                        'url(/assets/images/placeholder-image.png)',
                         
                         backgroundSize: "cover", backgroundPosition: "center" }}>
                             <div className="flex bg-[#808080] opacity-75 absolute bottom-0 left-0 right-0 justify-around px-2">
